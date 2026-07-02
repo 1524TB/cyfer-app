@@ -77,21 +77,22 @@
   .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
   .screen.active { display: flex; }
 
-  /* SCROLL AREA */
-  .scroll { flex: 1; overflow-y: auto; padding: 0 22px 100px; }
+  /* SCROLL AREA — padding bottom accounts for fixed nav */
+  .scroll { flex: 1; overflow-y: auto; padding: 0 22px 96px; }
   .scroll::-webkit-scrollbar { display: none; }
 
-  /* NAV BAR — matches design exactly */
+  /* NAV BAR — sticky at bottom, always visible */
   .nav {
-    position: absolute;
+    position: sticky;
     bottom: 0; left: 0; right: 0;
-    height: 82px;
+    height: 74px;
     background: var(--cream);
-    border-top: 1px solid rgba(0,0,0,0.055);
+    border-top: 1px solid rgba(0,0,0,0.07);
     display: flex;
     align-items: flex-start;
-    padding-top: 14px;
-    z-index: 10;
+    padding-top: 12px;
+    z-index: 100;
+    flex-shrink: 0;
   }
   .nav-item {
     flex: 1;
@@ -105,14 +106,14 @@
     padding: 0;
     color: var(--ink-faint);
     font-family: 'Inter', sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 400;
     letter-spacing: 0.01em;
     transition: color 0.18s var(--ease-out);
   }
   .nav-item.active { color: var(--ink); font-weight: 500; }
   .nav-icon {
-    width: 22px; height: 22px;
+    width: 23px; height: 23px;
     stroke: currentColor;
     fill: none;
     stroke-width: 1.5;
@@ -121,7 +122,7 @@
     transition: stroke 0.18s;
   }
 
-  /* TYPOGRAPHY */
+  /* TYPOGRAPHY — bumped 1pt across the board */
   h1.display {
     font-family: 'Playfair Display', serif;
     font-size: 34px;
@@ -130,15 +131,15 @@
     letter-spacing: -0.01em;
   }
   h2.section-label {
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.11em;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--ink-muted);
     margin-bottom: 10px;
   }
   .tagline {
-    font-size: 13px;
+    font-size: 15px;
     color: var(--ink-muted);
     font-weight: 300;
     margin-top: 3px;
@@ -146,7 +147,7 @@
   }
   .greeting {
     font-family: 'Playfair Display', serif;
-    font-size: 22px;
+    font-size: 23px;
     font-weight: 400;
     margin-bottom: 22px;
     color: var(--ink);
@@ -169,8 +170,8 @@
   .card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.07); }
   .card:active { transform: translateY(0); }
   .card-left { display: flex; flex-direction: column; gap: 5px; flex: 1; }
-  .card-title { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
-  .card-sub { font-size: 12px; color: var(--ink-muted); font-weight: 300; }
+  .card-title { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+  .card-sub { font-size: 13px; color: var(--ink-muted); font-weight: 300; }
   .card-arrow {
     width: 34px; height: 34px;
     background: var(--cream);
@@ -430,8 +431,8 @@
   .topic-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
   .topic-card:active { transform: translateY(0); }
   .topic-info { flex: 1; }
-  .topic-name { font-size: 15px; font-weight: 500; margin-bottom: 2px; letter-spacing: -0.01em; }
-  .topic-tag { font-size: 11px; color: var(--ink-faint); font-weight: 300; }
+  .topic-name { font-size: 16px; font-weight: 500; margin-bottom: 3px; letter-spacing: -0.01em; color: var(--ink); }
+  .topic-tag { font-size: 12px; color: var(--ink-muted); font-weight: 300; }
   .topic-stats { text-align: right; padding-left: 8px; }
   .topic-acc { font-size: 14px; font-weight: 500; color: var(--sage); font-family: 'Playfair Display', serif; }
   .topic-reps { font-size: 10px; color: var(--ink-faint); margin-top: 2px; }
@@ -469,43 +470,37 @@
 <body>
 
 <div class="phone">
-  <div class="status">
-    <span>9:41</span>
-    <span>●●●</span>
-  </div>
-
   <!-- ═══════════════════════════════════════ HOME ═══════════════════════════════════════ -->
   <div class="screen active" id="screen-home">
-    <div class="scroll">
-      <div style="padding-top:10px; margin-bottom:24px;">
-        <h1 class="display">Cyfer.</h1>
-        <p class="tagline">Train Your Thinking.</p>
-      </div>
+    <!-- HERO — centered title -->
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:0 22px; text-align:center; padding-bottom:20px;">
+      <h1 class="display" style="font-size:42px; margin-bottom:6px;">Cyfer.</h1>
+      <p class="tagline" style="font-size:15px; margin-bottom:48px;">Train Your Thinking.</p>
 
-      <p class="greeting" id="greeting">Good evening.</p>
-
-      <!-- PRACTICE LIBRARY -->
-      <div class="card" onclick="showScreen('library')">
-        <div class="card-left">
-          <div class="card-title">Practice Library</div>
-          <div class="card-sub">15 Modules · Unlimited Questions</div>
+      <!-- CARDS -->
+      <div style="width:100%;">
+        <div class="card" onclick="showScreen('library')">
+          <div class="card-left">
+            <div class="card-title">Practice Library</div>
+            <div class="card-sub">15 Modules · Unlimited Questions</div>
+          </div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
         </div>
-        <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-      </div>
 
-      <!-- STATISTICS -->
-      <div class="card" onclick="showScreen('stats')">
-        <div class="card-left">
-          <div class="card-title">Statistics</div>
-          <div class="card-sub">Track your progress</div>
+        <div class="card" onclick="showScreen('stats')">
+          <div class="card-left">
+            <div class="card-title">Statistics</div>
+            <div class="card-sub">Track your progress</div>
+          </div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
         </div>
-        <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
+    </div>
 
-      <!-- TODAY'S PROGRESS -->
-      <div class="section-gap"></div>
+    <!-- TODAY'S PROGRESS — pinned to bottom above nav -->
+    <div style="padding: 0 22px 18px; flex-shrink:0;">
       <h2 class="section-label">Today's Progress</h2>
-      <div class="stats-row">
+      <div class="stats-row" style="margin-bottom:0;">
         <div class="stat-box">
           <div class="stat-num" id="home-acc">—</div>
           <div class="stat-lbl">Accuracy</div>
@@ -947,7 +942,7 @@
           <div id="stats-strengths"><div style="font-size:12px;color:var(--ink-faint);">Practice more to unlock</div></div>
         </div>
         <div style="background:var(--wrong-bg);border:1px solid var(--wrong-bd);border-radius:var(--r);padding:14px;">
-          <div style="font-size:10px;font-weight:500;letter-spacing:0.09em;color:var(--wrong-txt);text-transform:uppercase;margin-bottom:8px;">Focus here</div>
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.09em;color:var(--wrong-txt);text-transform:uppercase;margin-bottom:8px;">Needs work</div>
           <div id="stats-weaknesses"><div style="font-size:12px;color:var(--ink-faint);">Practice more to unlock</div></div>
         </div>
       </div>
@@ -1042,6 +1037,18 @@
         Profile
       </button>
     </nav>
+  </div>
+
+  <!-- MODULE DETAIL PANEL -->
+  <div id="module-detail" style="display:none;position:absolute;inset:0;background:var(--cream);z-index:200;flex-direction:column;overflow:hidden;">
+    <div style="padding:16px 22px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:1px solid rgba(0,0,0,0.06);">
+      <button class="back-btn" onclick="closeModuleDetail()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div>
+        <div id="detail-title" style="font-size:17px;font-weight:500;font-family:'Playfair Display',serif;"></div>
+        <div id="detail-sub" style="font-size:12px;color:var(--ink-muted);margin-top:2px;"></div>
+      </div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px 22px 40px;" id="detail-body"></div>
   </div>
 
 </div>
@@ -1441,6 +1448,7 @@ let state = {
   totalCorrect: 0,
   totalAnswered: 0,
   topicStats: {},
+  questionHistory: {},
   timerEnabled: true,
   lastPracticeDate: null,
 };
@@ -1674,7 +1682,7 @@ function updateStatsScreen() {
       </div>`).join('');
   }
 
-  // ── BAR BREAKDOWN ────────────────────────────────────────────
+  // ── BAR BREAKDOWN (clickable) ────────────────────────────────
   const container = document.getElementById('stats-breakdown');
   container.innerHTML = '';
   allMods.forEach(({ key, label }) => {
@@ -1682,14 +1690,22 @@ function updateStatsScreen() {
     const a = s && s.answered > 0 ? Math.round(s.correct / s.answered * 100) : null;
     const reps = s?.reps || 0;
     const barColor = a === null ? 'var(--blush)' : a >= 80 ? 'var(--sage)' : a >= 60 ? '#C9A84C' : '#D4897A';
+    const hasHistory = state.questionHistory && state.questionHistory[key] && state.questionHistory[key].length > 0;
     const card = document.createElement('div');
-    card.style.cssText = 'background:white;border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.045);';
+    card.style.cssText = `background:white;border-radius:10px;padding:13px 14px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.045);cursor:${hasHistory?'pointer':'default'};`;
+    if (hasHistory) {
+      card.onclick = () => openModuleDetail(key, label);
+      card.onmouseenter = () => card.style.transform = 'translateY(-1px)';
+      card.onmouseleave = () => card.style.transform = '';
+      card.style.transition = 'transform 0.15s';
+    }
     card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
-        <div style="font-size:13px;font-weight:500;">${label}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-size:14px;font-weight:500;color:var(--ink);">${label}</div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:10px;color:var(--ink-faint);">${reps} reps</span>
-          <span style="font-size:14px;font-family:'Playfair Display',serif;color:${barColor};font-weight:500;">${a !== null ? a + '%' : '—'}</span>
+          <span style="font-size:11px;color:var(--ink-faint);">${reps} reps</span>
+          <span style="font-size:15px;font-family:'Playfair Display',serif;color:${barColor};font-weight:500;">${a !== null ? a + '%' : '—'}</span>
+          ${hasHistory ? `<span style="color:var(--ink-faint);font-size:12px;">›</span>` : ''}
         </div>
       </div>
       <div style="height:3px;background:var(--blush);border-radius:2px;">
@@ -1697,6 +1713,52 @@ function updateStatsScreen() {
       </div>`;
     container.appendChild(card);
   });
+}
+
+function openModuleDetail(key, label) {
+  const history = (state.questionHistory && state.questionHistory[key]) || [];
+  const s = state.topicStats[key];
+  const acc = s && s.answered > 0 ? Math.round(s.correct / s.answered * 100) : null;
+
+  document.getElementById('detail-title').textContent = label;
+  document.getElementById('detail-sub').textContent = `${s?.reps || 0} reps · ${acc !== null ? acc + '% accuracy' : 'No data yet'}`;
+
+  const body = document.getElementById('detail-body');
+  body.innerHTML = '';
+
+  if (history.length === 0) {
+    body.innerHTML = '<div style="font-size:14px;color:var(--ink-faint);text-align:center;padding:40px 0;">No questions recorded yet.</div>';
+  } else {
+    // Group by session
+    const correct = history.filter(h => h.correct);
+    const wrong = history.filter(h => !h.correct);
+
+    const makeSection = (title, color, items) => {
+      if (items.length === 0) return '';
+      const rows = items.slice(-20).reverse().map(h => `
+        <div style="padding:12px 14px;background:var(--white);border-radius:10px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.045);">
+          <div style="font-size:13px;color:var(--ink);line-height:1.5;margin-bottom:6px;">${h.q}</div>
+          <div style="display:flex;gap:14px;font-size:11px;color:var(--ink-faint);">
+            <span>Your answer: <strong style="color:var(--ink);">${Number(h.userAnswer).toLocaleString()}</strong></span>
+            <span>${h.elapsed.toFixed(1)}s</span>
+          </div>
+          ${h.trick ? `<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;font-style:italic;line-height:1.5;">${h.trick}</div>` : ''}
+        </div>`).join('');
+      return `
+        <div style="font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${color};margin-bottom:10px;margin-top:18px;">${title} (${items.length})</div>
+        ${rows}`;
+    };
+
+    body.innerHTML = makeSection('Correct', 'var(--correct-txt)', correct) + makeSection('Needs work', 'var(--wrong-txt)', wrong);
+  }
+
+  const panel = document.getElementById('module-detail');
+  panel.style.display = 'flex';
+  setTimeout(() => panel.style.opacity = '1', 10);
+}
+
+function closeModuleDetail() {
+  document.getElementById('module-detail').style.display = 'none';
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1850,10 +1912,8 @@ function submitAnswer() {
   if (correct) session.correct++;
   if (q.trick) session.sessionTricks.push(q.trick);
 
-  // Flash the input green/red briefly, then auto-advance
-  input.className = 'answer-input ' + (correct ? 'correct' : 'wrong');
+  // Disable input, auto-advance after brief pause
   input.disabled = true;
-
   renderDots();
 
   // Auto-advance after 600ms — fast enough to feel fluid
@@ -1888,6 +1948,22 @@ function endSession() {
   state.topicStats[session.module].correct += session.correct;
   state.topicStats[session.module].answered += total;
   state.topicStats[session.module].reps += total;
+
+  // Save per-question history for drill-down
+  if (!state.questionHistory) state.questionHistory = {};
+  if (!state.questionHistory[session.module]) state.questionHistory[session.module] = [];
+  session.questions.forEach((q, i) => {
+    const t = session.times[i];
+    if (!t) return;
+    state.questionHistory[session.module].push({
+      q: q.q, correct: t.correct, userAnswer: t.userAnswer,
+      elapsed: t.elapsed, trick: q.trick || null,
+    });
+  });
+  // Keep only last 100 per module
+  if (state.questionHistory[session.module].length > 100) {
+    state.questionHistory[session.module] = state.questionHistory[session.module].slice(-100);
+  }
 
   // Streak
   const today = new Date().toDateString();
