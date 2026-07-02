@@ -861,9 +861,9 @@
     <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
 
     <!-- Session progress dots -->
-    <div style="padding: 12px 24px 0; display:flex; gap:6px;" id="q-dots"></div>
+    <div style="padding: 14px 22px 0; display:flex; gap:7px; justify-content:center;" id="q-dots"></div>
 
-    <!-- Question -->
+    <!-- Question — centered vertically -->
     <div class="q-area" id="q-area">
       <div class="q-context" id="q-context" style="display:none;"></div>
       <div class="q-text" id="q-text">Loading...</div>
@@ -872,16 +872,11 @@
 
     <!-- Answer -->
     <div class="answer-area">
-      <div class="feedback" id="feedback">
-        <div class="feedback-title" id="feedback-title"></div>
-        <div class="feedback-body" id="feedback-body"></div>
-      </div>
       <input class="answer-input" id="answer-input" type="number" placeholder="your answer" autocomplete="off"/>
-      <p class="kbd-hint">Press Enter to submit</p>
+      <p class="kbd-hint">Type your answer · Press Enter to continue</p>
       <button class="btn-primary" id="submit-btn" onclick="submitAnswer()">
-        Check answer <svg style="width:15px;height:15px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        Next <svg style="width:15px;height:15px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
-      <button class="btn-secondary" id="next-btn" style="display:none;" onclick="nextQuestion()">Next question <span class="arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
     </div>
   </div>
 
@@ -913,8 +908,12 @@
           </div>
         </div>
 
-        <!-- TRICK RECAP -->
-        <h2 class="section-label" style="margin-top:8px;">Key tricks from this session</h2>
+        <!-- QUESTION RECAP -->
+        <h2 class="section-label" style="margin-top:8px;">Question recap</h2>
+        <div id="result-recap"></div>
+
+        <!-- TRICKS -->
+        <h2 class="section-label" style="margin-top:20px;">Key tricks</h2>
         <div id="result-tricks"></div>
 
         <div style="margin-top:20px;">
@@ -1442,29 +1441,22 @@ function renderQuestion() {
   }
 
   document.getElementById('q-text').textContent = q.q;
-  document.getElementById('q-hint').textContent = q.hint ? '💡 ' + q.hint : '';
+  const hintEl = document.getElementById('q-hint');
+  if (q.hint) {
+    hintEl.innerHTML = '<span id="hint-toggle" onclick="revealHint()" style="cursor:pointer;text-decoration:underline;text-decoration-style:dotted;">💡 Show hint</span><span id="hint-text" style="display:none;"> ' + q.hint + '</span>';
+  } else {
+    hintEl.textContent = '';
+  }
 
-  // Input
+  // Input — reset and focus
   const input = document.getElementById('answer-input');
   input.value = '';
   input.className = 'answer-input';
   input.disabled = false;
   input.placeholder = 'your answer';
-  input.focus();
+  setTimeout(() => input.focus(), 80);
 
-  // Buttons
-  document.getElementById('submit-btn').style.display = 'flex';
-  document.getElementById('next-btn').style.display = 'none';
-
-  // Feedback
-  const fb = document.getElementById('feedback');
-  fb.className = 'feedback';
-  fb.style.display = 'none';
-
-  // Dots
   renderDots();
-
-  // Timer
   startTimer();
 
   session.answered = false;
@@ -1515,7 +1507,7 @@ function submitAnswer() {
   if (session.answered) return;
   const input = document.getElementById('answer-input');
   const val = parseFloat(input.value);
-  if (isNaN(val)) { input.focus(); return; }
+  if (isNaN(val) || input.value === '') { input.focus(); return; }
 
   session.answered = true;
   clearTimer();
@@ -1524,39 +1516,31 @@ function submitAnswer() {
   const elapsed = (Date.now() - session.startTime) / 1000;
   const correct = Math.abs(val - q.answer) <= (q.tolerance || 0);
 
-  session.times.push({ correct, elapsed });
+  // Store result with user's answer for recap
+  session.times.push({ correct, elapsed, userAnswer: val });
   if (correct) session.correct++;
   if (q.trick) session.sessionTricks.push(q.trick);
 
-  // Visual feedback
+  // Flash the input green/red briefly, then auto-advance
   input.className = 'answer-input ' + (correct ? 'correct' : 'wrong');
   input.disabled = true;
 
-  const fb = document.getElementById('feedback');
-  fb.style.display = 'block';
-  if (correct) {
-    fb.className = 'feedback show correct';
-    document.getElementById('feedback-title').textContent = `Correct! ${elapsed.toFixed(1)}s`;
-    document.getElementById('feedback-body').textContent = q.trick || 'Great work.';
-  } else {
-    fb.className = 'feedback show wrong';
-    document.getElementById('feedback-title').textContent = `Answer: ${q.answer}`;
-    document.getElementById('feedback-body').textContent = q.trick || 'Keep practising.';
-  }
-
-  document.getElementById('submit-btn').style.display = 'none';
-  document.getElementById('next-btn').style.display = 'block';
-
   renderDots();
+
+  // Auto-advance after 600ms — fast enough to feel fluid
+  setTimeout(() => {
+    session.current++;
+    if (session.current >= session.questions.length) {
+      endSession();
+    } else {
+      renderQuestion();
+    }
+  }, 600);
 }
 
-function nextQuestion() {
-  session.current++;
-  if (session.current >= session.questions.length) {
-    endSession();
-  } else {
-    renderQuestion();
-  }
+function revealHint() {
+  document.getElementById('hint-toggle').style.display = 'none';
+  document.getElementById('hint-text').style.display = 'inline';
 }
 
 function endSession() {
@@ -1596,18 +1580,45 @@ function endSession() {
   document.getElementById('result-title').textContent = titles[t];
   document.getElementById('result-sub').textContent = `${session.correct} of ${total} correct · avg ${avgTime.toFixed(1)}s`;
 
-  // Tricks recap
+  // Question-by-question recap
+  const recapEl = document.getElementById('result-recap');
+  recapEl.innerHTML = '';
+  session.questions.forEach((q, i) => {
+    const t = session.times[i];
+    if (!t) return;
+    const el = document.createElement('div');
+    const bg = t.correct ? 'var(--correct-bg)' : 'var(--wrong-bg)';
+    const bd = t.correct ? 'var(--correct-bd)' : 'var(--wrong-bd)';
+    const label = t.correct ? '✓' : '✗';
+    const labelColor = t.correct ? 'var(--correct-txt)' : 'var(--wrong-txt)';
+    el.style.cssText = `background:${bg};border:1px solid ${bd};border-radius:12px;padding:12px 14px;margin-bottom:8px;`;
+    el.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div style="font-size:13px;color:var(--ink);line-height:1.5;flex:1;">${q.q}</div>
+        <div style="font-size:16px;font-weight:600;color:${labelColor};flex-shrink:0;">${label}</div>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--ink-muted);">
+        <span>Your answer: <strong style="color:var(--ink);">${t.userAnswer}</strong></span>
+        <span>${t.elapsed.toFixed(1)}s</span>
+      </div>
+      ${q.trick ? `<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:1.5;font-style:italic;">${q.trick}</div>` : ''}
+    `;
+    recapEl.appendChild(el);
+  });
+
+  // Tricks recap (unique tricks only)
   const tricksEl = document.getElementById('result-tricks');
   tricksEl.innerHTML = '';
-  const shown = [...new Set(session.sessionTricks)].slice(0, 3);
+  const shown = [...new Set(session.sessionTricks)];
+  if (shown.length === 0) {
+    tricksEl.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);">No tricks to show for this session.</div>';
+  }
   shown.forEach(trick => {
     const el = document.createElement('div');
-    el.style.cssText = 'background:white;border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.04);font-size:12px;color:var(--ink-muted);line-height:1.6;';
+    el.style.cssText = 'background:white;border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.05);font-size:12px;color:var(--ink-muted);line-height:1.65;font-weight:300;';
     el.textContent = trick;
     tricksEl.appendChild(el);
   });
-
-  // Home stats
   document.getElementById('home-acc').textContent = Math.round(state.totalCorrect / state.totalAnswered * 100) + '%';
   document.getElementById('home-spd').textContent = avgTime.toFixed(1) + 's';
   document.getElementById('home-streak').textContent = state.streak;
@@ -1663,7 +1674,6 @@ document.addEventListener('keydown', e => {
     const practice = document.getElementById('screen-practice').classList.contains('active');
     if (!practice) return;
     if (!session.answered) submitAnswer();
-    else nextQuestion();
   }
 });
 
