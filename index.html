@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"/>
 <title>Cyfer. — Train Your Thinking</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -250,14 +250,16 @@
   .practice-topic { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
   .practice-count { font-size: 11px; color: var(--ink-faint); margin-top: 1px; }
 
-  /* QUESTION AREA */
+  /* QUESTION AREA — fixed height so keyboard doesn't push it away */
   .q-area {
-    flex: 1;
+    height: 260px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 0 26px;
-    gap: 20px;
+    gap: 12px;
   }
   .q-context {
     font-size: 13px;
@@ -268,13 +270,15 @@
     border-radius: var(--r-sm);
     border: 1px solid rgba(0,0,0,0.05);
     font-weight: 300;
+    width: 100%;
   }
   .q-text {
     font-family: 'Playfair Display', serif;
-    font-size: 28px;
+    font-size: 26px;
     line-height: 1.25;
     text-align: center;
     letter-spacing: -0.01em;
+    width: 100%;
   }
   .q-hint {
     font-size: 12px;
@@ -288,16 +292,16 @@
   .answer-input {
     width: 100%;
     font-family: 'Playfair Display', serif;
-    font-size: 28px;
+    font-size: 26px;
     text-align: center;
     background: var(--white);
     border: 1.5px solid rgba(0,0,0,0.09);
     border-radius: var(--r);
-    padding: 15px;
+    padding: 13px;
     outline: none;
     color: var(--ink);
     transition: border-color 0.2s var(--ease-out), background 0.2s;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.03);
   }
   .answer-input:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(167,191,174,0.18); }
@@ -480,21 +484,11 @@
 
       <p class="greeting" id="greeting">Good evening.</p>
 
-      <!-- CONTINUE CARD -->
-      <div class="card" onclick="startPractice('consulting')">
-        <div class="card-left" style="flex:1;">
-          <div class="card-title">Continue</div>
-          <div class="card-sub" id="continue-sub">Consulting Math · Rep 1 of 10</div>
-          <div class="progress-bar"><div class="progress-fill" id="continue-progress" style="width:10%"></div></div>
-        </div>
-        <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-      </div>
-
       <!-- PRACTICE LIBRARY -->
       <div class="card" onclick="showScreen('library')">
         <div class="card-left">
           <div class="card-title">Practice Library</div>
-          <div class="card-sub">17 Modules · 140+ Questions</div>
+          <div class="card-sub">15 Modules · Unlimited Questions</div>
         </div>
         <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
@@ -793,37 +787,6 @@
         </div>
       </div>
 
-      <div class="section-gap"></div>
-      <h2 class="section-label">Industry Drills</h2>
-
-      <div class="topic-card" onclick="startPractice('industry_retail')">
-        <div class="icon-badge" style="background:#FBF4EE; color:#8B5A2E;">
-          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        </div>
-        <div class="topic-info">
-          <div class="topic-name">Retail</div>
-          <div class="topic-tag">Margin · Revenue/sqft · Conversion</div>
-        </div>
-        <div class="topic-stats">
-          <div class="topic-acc" id="lib-industry_retail-acc">—</div>
-          <div class="topic-reps" id="lib-industry_retail-reps">0 reps</div>
-        </div>
-      </div>
-
-      <div class="topic-card" onclick="startPractice('industry_tech')">
-        <div class="icon-badge" style="background:#EEF2FB; color:#2A3E7A;">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <div class="topic-info">
-          <div class="topic-name">Tech / SaaS</div>
-          <div class="topic-tag">ARR · CAC/LTV · Churn · Valuation</div>
-        </div>
-        <div class="topic-stats">
-          <div class="topic-acc" id="lib-industry_tech-acc">—</div>
-          <div class="topic-reps" id="lib-industry_tech-reps">0 reps</div>
-        </div>
-      </div>
-
       <div style="height:80px;"></div>
     </div>
 
@@ -872,10 +835,10 @@
 
     <!-- Answer -->
     <div class="answer-area">
-      <input class="answer-input" id="answer-input" type="number" placeholder="your answer" autocomplete="off"/>
+      <input class="answer-input" id="answer-input" type="text" inputmode="decimal" placeholder="your answer" autocomplete="off"/>
       <p class="kbd-hint">Type your answer · Press Enter to continue</p>
       <button class="btn-primary" id="submit-btn" onclick="submitAnswer()">
-        Next <svg style="width:15px;height:15px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        Next
       </button>
     </div>
   </div>
@@ -943,7 +906,7 @@
           <div class="streak-label">day streak</div>
         </div>
         <div>
-          <div style="font-size:11px;opacity:0.7;margin-bottom:8px;text-align:right;">This week</div>
+          <div style="font-size:11px;opacity:0.55;margin-bottom:8px;text-align:right;letter-spacing:0.04em;">THIS WEEK</div>
           <div class="week-dots" id="week-dots">
             <div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div>
             <div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div>
@@ -951,6 +914,7 @@
         </div>
       </div>
 
+      <!-- SUMMARY STATS -->
       <div class="stats-row">
         <div class="stat-box">
           <div class="stat-num" id="stats-total">0</div>
@@ -966,7 +930,30 @@
         </div>
       </div>
 
-      <h2 class="section-label">Accuracy by topic</h2>
+      <!-- RADAR CHART -->
+      <h2 class="section-label">Skill map</h2>
+      <div style="background:var(--white);border-radius:var(--r);border:1px solid rgba(0,0,0,0.045);padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+        <svg id="radar-chart" viewBox="0 0 280 240" width="100%" style="display:block;"></svg>
+        <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-top:10px;font-size:11px;color:var(--ink-faint);">
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--sage);display:inline-block;"></span>Your accuracy</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--blush);display:inline-block;"></span>Target (80%)</span>
+        </div>
+      </div>
+
+      <!-- STRENGTH & WEAKNESS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+        <div style="background:var(--correct-bg);border:1px solid var(--correct-bd);border-radius:var(--r);padding:14px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.09em;color:var(--correct-txt);text-transform:uppercase;margin-bottom:8px;">Strengths</div>
+          <div id="stats-strengths"><div style="font-size:12px;color:var(--ink-faint);">Practice more to unlock</div></div>
+        </div>
+        <div style="background:var(--wrong-bg);border:1px solid var(--wrong-bd);border-radius:var(--r);padding:14px;">
+          <div style="font-size:10px;font-weight:500;letter-spacing:0.09em;color:var(--wrong-txt);text-transform:uppercase;margin-bottom:8px;">Focus here</div>
+          <div id="stats-weaknesses"><div style="font-size:12px;color:var(--ink-faint);">Practice more to unlock</div></div>
+        </div>
+      </div>
+
+      <!-- BAR BREAKDOWN -->
+      <h2 class="section-label">Accuracy by module</h2>
       <div id="stats-breakdown"></div>
 
       <div style="height:80px;"></div>
@@ -1259,8 +1246,195 @@ const QUESTIONS = {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// STATE
+// QUESTION GENERATORS — infinite unique calculations
 // ═══════════════════════════════════════════════════════════════
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const rnd = (min, max, step=1) => Math.round((Math.random() * (max - min) + min) / step) * step;
+const fmt = (n) => n.toLocaleString();
+
+const GENERATORS = {
+
+  big_division: () => {
+    const pairs = [
+      [100,20],[200,40],[300,50],[400,80],[500,25],[600,30],[800,40],[900,45],
+      [120,60],[240,80],[360,90],[480,60],[560,70],[640,80],[720,90],[840,60],
+      [1000,25],[1200,30],[1500,50],[2000,40],[2400,60],[3000,75],[4000,80],[5000,25],
+      [6000,50],[8000,40],[9000,45],[10000,25],[12000,60],[15000,50],[18000,60],[20000,40],
+    ];
+    const [a, b] = pick(pairs);
+    const zeros = pick([[1000,1000],[10000,1000],[100000,1000],[1000000,1000],[10000,10000],[100000,10000],[1000000,10000],[1000000,100000]]);
+    const A = a * zeros[0], B = b * zeros[1];
+    const ans = A / B;
+    return {
+      q: `${fmt(A)} ÷ ${fmt(B)} = ?`,
+      answer: ans, tolerance: ans * 0.001,
+      trick: `Cancel equal zeros: ${fmt(A)} ÷ ${fmt(B)} → ${a} ÷ ${b} = ${ans}. Drop the same number of zeros from each side.`
+    };
+  },
+
+  big_multiplication: () => {
+    const pairs = [
+      [7,3],[6,8],[5,4],[9,2],[4,4],[8,5],[6,6],[7,7],[3,3],[9,9],
+      [12,8],[15,6],[25,4],[14,7],[18,5],[22,4],[35,3],[16,6],[24,5],[45,2],
+    ];
+    const [a, b] = pick(pairs);
+    const zerosA = pick([1000, 10000, 100000]);
+    const zerosB = pick([1000, 10000, 100000]);
+    const A = a * zerosA, B = b * zerosB;
+    const raw = A * B;
+    const label = raw >= 1e9 ? `${(raw/1e9).toFixed(raw%1e9===0?0:1)}B` : raw >= 1e6 ? `${(raw/1e6).toFixed(raw%1e6===0?0:1)}M` : fmt(raw);
+    const ans = parseFloat((raw / 1e9).toPrecision(3));
+    return {
+      q: `${fmt(A)} × ${fmt(B)} = ? (answer in billions)`,
+      answer: ans, tolerance: Math.max(ans * 0.02, 0.01),
+      hint: `${a} × ${b} = ${a*b}, then count the zeros`,
+      trick: `${a} × ${b} = ${a*b}. Count zeros: ${Math.log10(zerosA)} + ${Math.log10(zerosB)} = ${Math.log10(zerosA)+Math.log10(zerosB)} zeros → ${label}.`
+    };
+  },
+
+  small_multiplication: () => {
+    const scenarios = [
+      () => { const a=rnd(2,9)*100, b=rnd(2,9)*10; return { q:`${fmt(a)} × ${fmt(b)} = ?`, answer:a*b, tolerance:0, trick:`${a/100} × ${b/10} = ${(a/100)*(b/10)}. Add ${Math.log10(100)+Math.log10(10)} zeros → ${fmt(a*b)}.` }; },
+      () => { const a=rnd(2,9)*100, b=rnd(2,9)*100; return { q:`${fmt(a)} × ${fmt(b)} = ?`, answer:a*b, tolerance:0, trick:`${a/100} × ${b/100} = ${(a/100)*(b/100)}. Add 4 zeros → ${fmt(a*b)}.` }; },
+      () => { const a=pick([125,250,375,500,625,750,875]), b=pick([8,4,16,32]); return { q:`${fmt(a)} × ${b} = ?`, answer:a*b, tolerance:0, trick:`${a} × ${b} = ${fmt(a*b)}. Key anchor: 125 × 8 = 1,000.` }; },
+      () => { const a=rnd(11,49)*10, b=rnd(2,9)*10; return { q:`${fmt(a)} × ${fmt(b)} = ?`, answer:a*b, tolerance:0, trick:`${a/10} × ${b/10} = ${(a/10)*(b/10)}. Add 2 zeros → ${fmt(a*b)}.` }; },
+      () => { const a=rnd(3,9)*500, b=rnd(2,6)*2; return { q:`${fmt(a)} × ${fmt(b)} = ?`, answer:a*b, tolerance:0, trick:`${a} × ${b}: think ${a/500} × ${b/2} = ${(a/500)*(b/2)}, × 1000 = ${fmt(a*b)}.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  percentages: () => {
+    const scenarios = [
+      () => { const pct=pick([5,10,15,20,25,30,40,50,60,75]), base=rnd(2,20)*100; const ans=Math.round(base*pct/100*100)/100; return { q:`What is ${pct}% of ${fmt(base)}?`, answer:ans, tolerance:Math.max(1,ans*0.01), hint:`${pct}% = ${pct/100} × ${fmt(base)}`, trick:`${pct}% of ${fmt(base)}: ${pct<=10?`move decimal: ${base/10} × ${pct/10}`:`break it: 10% = ${base/10}, then scale`}. Answer: ${fmt(ans)}.` }; },
+      () => { const orig=rnd(1,20)*100, pct=pick([10,15,20,25,30,40,50]); const disc=Math.round(orig*pct/100); const ans=orig-disc; return { q:`A $${fmt(orig)} item is ${pct}% off. Final price?`, answer:ans, tolerance:1, trick:`${pct}% of ${fmt(orig)} = ${fmt(disc)}. ${fmt(orig)} − ${fmt(disc)} = $${fmt(ans)}. Or: ${100-pct}% × ${fmt(orig)} = ${fmt(ans)}.` }; },
+      () => { const base=rnd(2,30)*100, pct=pick([5,8,10,12,15,20,25]); const ans=Math.round(base*(1+pct/100)); return { q:`$${fmt(base)} marked up ${pct}%. New price?`, answer:ans, tolerance:1, trick:`${pct}% of ${fmt(base)} = ${Math.round(base*pct/100)}. Total = $${fmt(ans)}. Or: ${fmt(base)} × ${1+pct/100} = $${fmt(ans)}.` }; },
+      () => { const from=rnd(2,15)*100, to=rnd(1,5)*100+from; const pct=Math.round((to-from)/from*100); return { q:`Sales grew from $${fmt(from)} to $${fmt(to)}. % increase?`, answer:pct, tolerance:1, hint:`(New − Old) ÷ Old × 100`, trick:`(${fmt(to)} − ${fmt(from)}) ÷ ${fmt(from)} = ${to-from}/${fmt(from)} = ${pct}%. Always divide by the original.` }; },
+      () => { const after=rnd(2,15)*100, pct=pick([10,20,25,30,40,50]); const orig=Math.round(after/(1-pct/100)); return { q:`After a ${pct}% discount the price is $${fmt(after)}. Original price?`, answer:orig, tolerance:2, hint:`$${fmt(after)} = ${100-pct}% of original`, trick:`${fmt(after)} ÷ ${(100-pct)/100} = $${fmt(orig)}. Divide by the remaining percentage.` }; },
+      () => { const bill=rnd(2,20)*10, tip=pick([15,18,20,22,25]); const ans=Math.round(bill*tip/100*100)/100; return { q:`$${bill} bill, ${tip}% tip. Tip amount?`, answer:ans, tolerance:1, trick:`${tip}% of ${bill}: 10% = $${bill/10}${tip>10?`, then scale up`:''}. Tip = $${ans}.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  pct_of_pct: () => {
+    const a = pick([10,15,20,25,30,33,40,50,60,75]);
+    const b = pick([10,15,20,25,30,40,50,60,70,80]);
+    const ans = Math.round(a * b / 100 * 100) / 100;
+    const contexts = [
+      `Your product captures ${a}% of a segment that is ${b}% of the total market. Total share?`,
+      `Conversion rate ${a}%, of those ${b}% become repeat buyers. Net repeat rate of all visitors?`,
+      `${a}% of customers upgrade, ${b}% of those refer a friend. Net referral rate?`,
+      `${a}% of ${b}% = ?%`,
+    ];
+    return {
+      q: pick(contexts),
+      answer: ans, tolerance: 0.1,
+      hint: `Multiply as decimals: ${a/100} × ${b/100}`,
+      trick: `${a}% × ${b}% = ${a/100} × ${b/100} = ${ans/100} = ${ans}%. Always convert to decimals first.`
+    };
+  },
+
+  market_math: () => {
+    const scenarios = [
+      () => { const known=pick([100,200,300,500,800,1000,1500,2000]), pct=pick([2,4,5,8,10,20,25]); const total=Math.round(known/pct*100); return { q:`${fmt(known)} units sold = ${pct}% market share. Total market (units)?`, answer:total, tolerance:total*0.01, hint:`Total = known ÷ share%`, trick:`${fmt(known)} ÷ ${pct/100} = ${fmt(total)}. Or: ${fmt(known)} × ${100/pct} = ${fmt(total)}.` }; },
+      () => { const rev=pick([5,8,10,12,15,20,25,30,40,50]), pct=pick([2,3,4,5,8,10]); const total=Math.round(rev/pct*100); return { q:`Revenue $${rev}M with ${pct}% market share. Total market size ($M)?`, answer:total, tolerance:total*0.02, hint:`Market = Revenue ÷ Share`, trick:`${rev}M ÷ ${pct/100} = $${fmt(total)}M. Multiply revenue by ${Math.round(100/pct)}.` }; },
+      () => { const mkt=pick([100,200,400,500,800,1000,2000]), growth=pick([5,6,7,8,10,12,15]); const ans=Math.round(mkt*(1+growth/100)); return { q:`Market $${fmt(mkt)}M growing ${growth}% this year. New size ($M)?`, answer:ans, tolerance:ans*0.01, trick:`${fmt(mkt)} × ${1+growth/100} = $${fmt(ans)}M. 10% of ${fmt(mkt)} = ${fmt(mkt/10)}, scale to ${growth}%.` }; },
+      () => { const total=pick([500,1000,2000,5000]), share=pick([2,5,10,15,20,25]); const rev=Math.round(total*share/100); return { q:`Total market $${fmt(total)}M, you have ${share}% share. Your revenue ($M)?`, answer:rev, tolerance:1, trick:`${fmt(total)} × ${share/100} = $${fmt(rev)}M.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  break_even: () => {
+    const fixed = pick([1,2,3,4,5,6,8,10,12,15,20]) * 1000000;
+    const price = pick([50,75,100,120,150,200,250,300,400,500]);
+    const vcPct = pick([0.3,0.35,0.4,0.45,0.5,0.55,0.6]);
+    const vc = Math.round(price * vcPct / 5) * 5;
+    const contrib = price - vc;
+    const beUnits = Math.round(fixed / contrib);
+    const fixedM = fixed / 1e6;
+    return {
+      q: `Fixed costs $${fmt(fixed)}, price $${price}/unit, variable cost $${vc}/unit. Break-even units?`,
+      context: `Break-even = Fixed cost ÷ (Price − Variable cost)`,
+      answer: beUnits, tolerance: beUnits * 0.01,
+      hint: `Contribution margin = ${price} − ${vc} = $${contrib}`,
+      trick: `Contribution = $${contrib}/unit. ${fmt(fixed)} ÷ ${contrib} = ${fmt(beUnits)} units.`
+    };
+  },
+
+  growth_estimation: () => {
+    const scenarios = [
+      () => { const base=pick([50,80,100,120,150,200,250,300,400,500]), rate=pick([5,8,10,12,15,18,20,25,30]), yrs=pick([2,3,4,5]); const ans=Math.round(base*Math.pow(1+rate/100,yrs)); return { q:`$${fmt(base)}M revenue growing ${rate}% annually. Revenue in ${yrs} years ($M)?`, answer:ans, tolerance:ans*0.03, hint:`${base} × ${(1+rate/100).toFixed(2)}^${yrs}`, trick:`${(1+rate/100).toFixed(2)}^${yrs} ≈ ${(Math.pow(1+rate/100,yrs)).toFixed(2)}. ${fmt(base)} × that = ~$${fmt(ans)}M. Rule of 72: doubles every ${Math.round(72/rate)} yrs at ${rate}%.` }; },
+      () => { const base=pick([1,2,5,10,20,50]), rate=pick([50,75,80,100]), yrs=pick([2,3,4]); const ans=Math.round(base*Math.pow(1+rate/100,yrs)); return { q:`$${base}M ARR growing ${rate}% YoY. ARR in ${yrs} years ($M)?`, answer:ans, tolerance:ans*0.05, trick:`${(1+rate/100)}^${yrs} = ${(Math.pow(1+rate/100,yrs)).toFixed(2)}. $${base}M × that = $${fmt(ans)}M.` }; },
+      () => { const from=pick([20,30,40,50,60,80,100]), to=Math.round(from*rnd(15,35)/10)/10*10, yrs=pick([3,4,5]); const cagr=Math.round((Math.pow(to/from,1/yrs)-1)*100); return { q:`Revenue grew from $${from}M to $${fmt(to)}M in ${yrs} years. Approximate CAGR?`, answer:cagr, tolerance:3, hint:`CAGR = (${to}/${from})^(1/${yrs}) − 1`, trick:`${to}/${from} = ${(to/from).toFixed(1)}× growth. ${yrs}th root ≈ ${cagr+1}% CAGR. Quick check: ${cagr}% × ${yrs} yrs ≈ ${Math.round(cagr*yrs)}% simple growth.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  time_conversion: () => {
+    const scenarios = [
+      () => { const daily=pick([1000,2000,3000,5000,8000,10000,15000,20000,50000]); const annual=daily*365; const label=annual>=1e6?`$${(annual/1e6).toFixed(2)}M`:`$${fmt(annual)}`; return { q:`You earn $${fmt(daily)}/day. Annual income?`, answer:annual, tolerance:annual*0.01, trick:`${fmt(daily)} × 365 = ${label}. Shortcut: × 400 then − × 35.` }; },
+      () => { const annual=pick([60,80,100,120,150,200,250,300,400,500,600,800,1000])*1000; const monthly=Math.round(annual/12); return { q:`$${fmt(annual)}/year salary. Monthly income?`, answer:monthly, tolerance:500, trick:`${fmt(annual)} ÷ 12 = $${fmt(monthly)}/month. ÷ 12: halve twice then ÷ 3.` }; },
+      () => { const hourly=pick([15,20,25,30,40,50,60,75,100,125,150,200]); const annual=hourly*2080; return { q:`Hourly rate $${hourly}. Full-time annual salary ($K)?`, answer:annual/1000, tolerance:1, hint:`2,080 working hours per year`, trick:`${hourly} × 2,080 = $${fmt(annual)}. Shortcut: × 2,000 = ${fmt(hourly*2000)}, + ${hourly} × 80 = ${fmt(hourly*80)}.` }; },
+      () => { const rev=pick([12,24,36,48,60,120,240,360,480,600,1200]); const monthly=rev/12; return { q:`$${fmt(rev)}M annual revenue. Monthly revenue ($M)?`, answer:monthly, tolerance:monthly*0.01, trick:`${fmt(rev)} ÷ 12 = $${monthly}M/month.` }; },
+      () => { const perMin=pick([10,20,50,100,200,500,1000]); const annual=Math.round(perMin*525600); return { q:`Revenue $${fmt(perMin)}/minute. Annual revenue ($M)?`, answer:Math.round(annual/1e6), tolerance:2, hint:`~525,600 minutes in a year`, trick:`${fmt(perMin)} × 525,600 ≈ $${fmt(Math.round(annual/1e6))}M/year.` }; },
+      () => { const daily=pick([10000,20000,50000,100000,200000,500000,1e6]); const annual=daily*365; return { q:`$${fmt(daily)}/day revenue. Annual ($M)?`, answer:Math.round(annual/1e6), tolerance:2, trick:`${fmt(daily)} × 365 = $${fmt(annual)}. ≈ $${fmt(Math.round(annual/1e6))}M/year.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  npv: () => {
+    const scenarios = [
+      () => { const cf=pick([5,8,10,12,15,20,25,30]), r=pick([8,10,12,15,18,20]), g=pick([0,1,2,3,4,5]); if(r<=g) return GENERATORS.npv(); const npv=Math.round(cf/(r-g)*100); return { q:`Annual cash flow $${cf}M, discount rate ${r}%, growth ${g}%. NPV ($M)?`, context:`Gordon Growth Model: NPV = CF ÷ (r − g)`, answer:npv, tolerance:npv*0.02, hint:`(${r}% − ${g}%) = ${r-g}%`, trick:`$${cf}M ÷ ${(r-g)/100} = $${fmt(npv)}M. The Gordon Growth Model — memorise this formula.` }; },
+      () => { const cf=pick([1,2,3,5,8,10,15,20]), r=pick([8,10,12,15,20]); const npv=Math.round(cf/r*100); return { q:`Perpetual cash flow $${cf}M/yr, discount rate ${r}%, no growth. NPV ($M)?`, context:`Zero-growth perpetuity: NPV = CF ÷ r`, answer:npv, tolerance:npv*0.02, trick:`$${cf}M ÷ ${r/100} = $${fmt(npv)}M. Simple perpetuity formula.` }; },
+      () => { const fv=pick([500,1000,2000,5000]), r=pick([8,10,12,15]), n=pick([1,2,3]); const pv=Math.round(fv/Math.pow(1+r/100,n)); return { q:`Receive $${fmt(fv)}K in ${n} year${n>1?'s':''}. Discount rate ${r}%. PV today ($K)?`, answer:pv, tolerance:pv*0.02, hint:`PV = ${fmt(fv)} ÷ (1.${r.toString().padStart(2,'0')})^${n}`, trick:`${fmt(fv)} ÷ ${(Math.pow(1+r/100,n)).toFixed(2)} ≈ $${fmt(pv)}K. Discount = divide by (1+r)^n.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  multiplication: () => {
+    const scenarios = [
+      () => { const a=rnd(11,19), b=rnd(11,19); return { q:`${a} × ${b} = ?`, answer:a*b, tolerance:0, hint:`Use (${Math.round(a/5)*5} ± n) method`, trick:`${a} × ${b}: use (${a})(${b}) = (${Math.floor((a+b)/2)})² − (${Math.abs(a-b)/2})² if equal distance, or expand: ${a} × ${Math.floor(b/10)*10} + ${a} × ${b%10} = ${a*Math.floor(b/10)*10} + ${a*(b%10)} = ${a*b}.` }; },
+      () => { const a=rnd(21,49), b=pick([5,11,12,15,25,99,101]); return { q:`${a} × ${b} = ?`, answer:a*b, tolerance:0, trick:b===25?`× 25 = × 100 ÷ 4. ${a} × 100 = ${a*100} ÷ 4 = ${a*b}.`:b===99?`× 99 = × 100 − ${a}. ${a*100} − ${a} = ${a*b}.`:b===5?`× 5 = ÷ 2 × 10. ${a} ÷ 2 = ${a/2}, × 10 = ${a*b}.`:`${a} × ${b} = ${a*b}. Break it: ${a} × ${Math.floor(b/10)*10} + ${a} × ${b%10}.` }; },
+      () => { const n=rnd(12,35); return { q:`${n}² = ?`, answer:n*n, tolerance:0, hint:`(${Math.round(n/10)*10} ± ${Math.abs(n-Math.round(n/10)*10)})²`, trick:`${n}² = (${Math.round(n/10)*10})² ${n>Math.round(n/10)*10?'+':'-'} 2×${Math.round(n/10)*10}×${Math.abs(n-Math.round(n/10)*10)} + ${Math.pow(n-Math.round(n/10)*10,2)} = ${Math.pow(Math.round(n/10)*10,2)} ${n>Math.round(n/10)*10?'+':'-'} ${2*Math.round(n/10)*10*Math.abs(n-Math.round(n/10)*10)} + ${Math.pow(n-Math.round(n/10)*10,2)} = ${n*n}.` }; },
+      () => { const a=rnd(3,12)*10, b=rnd(3,12)*10; return { q:`${a} × ${b} = ?`, answer:a*b, tolerance:0, trick:`${a/10} × ${b/10} = ${(a/10)*(b/10)}. Add 2 zeros → ${a*b}.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+  division: () => {
+    const scenarios = [
+      () => { const b=pick([3,4,5,6,7,8,9,11,12,15,20,25]), ans=rnd(11,99); const a=b*ans; return { q:`${fmt(a)} ÷ ${b} = ?`, answer:ans, tolerance:0, trick:`${fmt(a)} ÷ ${b}: ${b<=5?`think multiples of ${b}`:`break into steps: ÷ ${b<=12?b:Math.round(b/2)} then ÷ ${Math.round(b/2)}`}. Answer = ${ans}.` }; },
+      () => { const b=pick([25,50,125,250,500]), ans=rnd(4,40); const a=b*ans; return { q:`${fmt(a)} ÷ ${b} = ?`, answer:ans, tolerance:0, trick:b===25?`÷ 25 = × 4 ÷ 100. ${a} × 4 = ${a*4} ÷ 100 = ${ans}.`:b===125?`÷ 125 = × 8 ÷ 1000. ${a} × 8 = ${a*8} ÷ 1000 = ${ans}.`:`${fmt(a)} ÷ ${b} = ${ans}.` }; },
+      () => { const b=pick([3,4,5,6,7,8,9]), ans=rnd(11,99), zeros=pick([10,100,1000,10000,100000]); const a=b*ans*zeros; return { q:`${fmt(a)} ÷ ${b} = ?`, answer:ans*zeros, tolerance:0, trick:`${fmt(a)} ÷ ${b}: the ${Math.log10(zeros)} zero${Math.log10(zeros)>1?'s':''} cancel. ${fmt(a/zeros)} ÷ ${b} = ${ans}, then × ${fmt(zeros)} = ${fmt(ans*zeros)}.` }; },
+      () => { const a=rnd(2,9)*100, b=rnd(2,9)*10; if(a%b!==0) { const ans2=a/b; return { q:`${a} ÷ ${b} = ?`, answer:ans2, tolerance:0.05, trick:`${a} ÷ ${b} = ${a/10} ÷ ${b/10} = ${ans2}.` }; } const ans=a/b; return { q:`${a} ÷ ${b} = ?`, answer:ans, tolerance:0, trick:`${a} ÷ ${b}: cancel a zero each side → ${a/10} ÷ ${b/10} = ${ans}.` }; },
+    ];
+    return pick(scenarios)();
+  },
+
+};
+
+// Generate a pool of questions for a module
+function generatePool(module, count) {
+  const gen = GENERATORS[module];
+  const staticQ = QUESTIONS[module];
+  if (!gen && !staticQ) return [];
+  if (!gen) return [...staticQ].sort(() => Math.random() - 0.5);
+
+  // Mix generator questions with static ones if both exist
+  const pool = [];
+  const seen = new Set();
+  let attempts = 0;
+  while (pool.length < count * 3 && attempts < count * 10) {
+    attempts++;
+    try {
+      const q = gen();
+      const key = q.q.slice(0, 40);
+      if (!seen.has(key)) { seen.add(key); pool.push(q); }
+    } catch(e) {}
+  }
+  // Pad with static if available
+  if (staticQ) pool.push(...[...staticQ].sort(() => Math.random() - 0.5));
+  return pool.sort(() => Math.random() - 0.5);
+}
 let state = {
   streak: 0,
   sessions: 0,
@@ -1319,12 +1493,6 @@ function updateHomeScreen() {
     document.getElementById('home-acc').textContent = Math.round(state.totalCorrect / state.totalAnswered * 100) + '%';
   }
   document.getElementById('home-streak').textContent = state.streak;
-
-  // continue card progress
-  const reps = Object.values(state.topicStats).reduce((a,b) => a + (b.reps || 0), 0);
-  const pct = Math.min(100, (reps / 50) * 100);
-  document.getElementById('continue-progress').style.width = pct + '%';
-  document.getElementById('continue-sub').textContent = `${currentModule === 'consulting' ? 'Consulting Math' : 'Practice'} · ${reps} reps done`;
 }
 
 function updateLibraryScreen() {
@@ -1343,45 +1511,190 @@ function updateStatsScreen() {
   document.getElementById('stats-streak').textContent = state.streak;
   document.getElementById('stats-total').textContent = state.totalAnswered;
   document.getElementById('stats-sessions').textContent = state.sessions;
-
   if (state.totalAnswered > 0) {
     document.getElementById('stats-acc').textContent = Math.round(state.totalCorrect / state.totalAnswered * 100) + '%';
   }
 
-  // week dots
-  const today = new Date().getDay();
+  // Week dots
   const dots = document.getElementById('week-dots').querySelectorAll('.week-dot');
+  dots.forEach(d => d.classList.remove('done'));
   if (state.streak > 0) {
     for (let i = 0; i < Math.min(state.streak, 7); i++) {
       dots[6 - i] && dots[6 - i].classList.add('done');
     }
   }
 
-  // breakdown
+  // Module data
+  const RADAR_MODULES = [
+    { key:'big_division',       label:'Big ÷' },
+    { key:'big_multiplication', label:'Big ×' },
+    { key:'percentages',        label:'%' },
+    { key:'market_math',        label:'Market' },
+    { key:'break_even',         label:'Break-even' },
+    { key:'growth_estimation',  label:'Growth' },
+    { key:'npv',                label:'NPV' },
+    { key:'consulting',         label:'Consulting' },
+  ];
+
+  const allMods = [
+    { key:'grab_bag', label:'Grab Bag' },
+    { key:'big_division', label:'Big Division' },
+    { key:'big_multiplication', label:'Big Multiplication' },
+    { key:'small_multiplication', label:'Small Multiplication' },
+    { key:'percentages', label:'Percentages' },
+    { key:'pct_of_pct', label:'Percent × Percent' },
+    { key:'market_math', label:'Market Math' },
+    { key:'break_even', label:'Break Evens' },
+    { key:'growth_estimation', label:'Growth' },
+    { key:'time_conversion', label:'Time Conversions' },
+    { key:'npv', label:'NPV' },
+    { key:'consulting', label:'Consulting Math' },
+    { key:'estimation', label:'Estimation' },
+    { key:'tips', label:'Tips & Discounts' },
+    { key:'multiplication', label:'Multiplication' },
+    { key:'division', label:'Division' },
+  ];
+
+  // Accuracy helper
+  const acc = (key) => {
+    const s = state.topicStats[key];
+    return (s && s.answered >= 3) ? Math.round(s.correct / s.answered * 100) : null;
+  };
+
+  // ── RADAR CHART ──────────────────────────────────────────────
+  const svg = document.getElementById('radar-chart');
+  svg.innerHTML = '';
+  const cx = 140, cy = 122, R = 88;
+  const n = RADAR_MODULES.length;
+  const angles = RADAR_MODULES.map((_, i) => (Math.PI * 2 * i / n) - Math.PI / 2);
+
+  const pt = (r, angle) => ({
+    x: cx + r * Math.cos(angle),
+    y: cy + r * Math.sin(angle)
+  });
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs) => {
+    const e = document.createElementNS(ns, tag);
+    Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, v));
+    return e;
+  };
+
+  // Grid rings
+  [0.25, 0.5, 0.75, 1].forEach(frac => {
+    const pts = angles.map(a => pt(R * frac, a));
+    const d = pts.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ') + 'Z';
+    svg.appendChild(el('path', { d, fill:'none', stroke:'rgba(0,0,0,0.07)', 'stroke-width':'1' }));
+    // Ring label
+    if (frac < 1) {
+      const labelPt = pt(R * frac, -Math.PI/2);
+      const t = el('text', { x: labelPt.x + 3, y: labelPt.y - 3, 'font-size':'8', fill:'rgba(0,0,0,0.25)', 'font-family':'Inter,sans-serif' });
+      t.textContent = `${frac*100}%`;
+      svg.appendChild(t);
+    }
+  });
+
+  // Axis spokes
+  angles.forEach(a => {
+    const p = pt(R, a);
+    svg.appendChild(el('line', { x1:cx, y1:cy, x2:p.x.toFixed(1), y2:p.y.toFixed(1), stroke:'rgba(0,0,0,0.07)', 'stroke-width':'1' }));
+  });
+
+  // Target ring (80%)
+  {
+    const pts = angles.map(a => pt(R * 0.8, a));
+    const d = pts.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ') + 'Z';
+    svg.appendChild(el('path', { d, fill:'rgba(237,231,223,0.5)', stroke:'rgba(237,231,223,0.9)', 'stroke-width':'1.5', 'stroke-dasharray':'4,3' }));
+  }
+
+  // Data polygon
+  const dataVals = RADAR_MODULES.map(m => acc(m.key));
+  const hasData = dataVals.some(v => v !== null);
+  if (hasData) {
+    const pts = dataVals.map((v, i) => pt(R * (v !== null ? v / 100 : 0.05), angles[i]));
+    const d = pts.map((p,i) => `${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ') + 'Z';
+    svg.appendChild(el('path', { d, fill:'rgba(167,191,174,0.25)', stroke:'#A7BFAE', 'stroke-width':'2', 'stroke-linejoin':'round' }));
+    // Dots
+    pts.forEach((p, i) => {
+      if (dataVals[i] !== null) {
+        svg.appendChild(el('circle', { cx:p.x.toFixed(1), cy:p.y.toFixed(1), r:'4', fill:'#A7BFAE', stroke:'white', 'stroke-width':'1.5' }));
+      }
+    });
+  } else {
+    const t = el('text', { x:cx, y:cy+4, 'text-anchor':'middle', 'font-size':'11', fill:'rgba(0,0,0,0.3)', 'font-family':'Inter,sans-serif' });
+    t.textContent = 'Complete 3+ questions per module';
+    svg.appendChild(t);
+  }
+
+  // Labels
+  RADAR_MODULES.forEach((m, i) => {
+    const p = pt(R + 16, angles[i]);
+    const anchor = Math.cos(angles[i]) > 0.1 ? 'start' : Math.cos(angles[i]) < -0.1 ? 'end' : 'middle';
+    const t = el('text', {
+      x: p.x.toFixed(1), y: (p.y + 4).toFixed(1),
+      'text-anchor': anchor,
+      'font-size': '9.5',
+      fill: acc(m.key) !== null ? '#1C1C1C' : '#ABABAB',
+      'font-family': 'Inter,sans-serif',
+      'font-weight': '400',
+    });
+    t.textContent = m.label;
+    svg.appendChild(t);
+  });
+
+  // ── STRENGTHS & WEAKNESSES ───────────────────────────────────
+  const scored = allMods
+    .map(m => ({ ...m, acc: acc(m.key), reps: state.topicStats[m.key]?.reps || 0 }))
+    .filter(m => m.acc !== null)
+    .sort((a, b) => b.acc - a.acc);
+
+  const strengths = scored.filter(m => m.acc >= 75).slice(0, 3);
+  const weaknesses = scored.filter(m => m.acc < 75).sort((a,b) => a.acc - b.acc).slice(0, 3);
+
+  const strEl = document.getElementById('stats-strengths');
+  const wkEl = document.getElementById('stats-weaknesses');
+
+  if (strengths.length === 0) {
+    strEl.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);">Practice more to unlock</div>';
+  } else {
+    strEl.innerHTML = strengths.map(m => `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:12px;color:var(--ink);font-weight:400;">${m.label}</div>
+        <div style="font-size:13px;font-family:'Playfair Display',serif;color:var(--correct-txt);">${m.acc}%</div>
+      </div>`).join('');
+  }
+
+  if (weaknesses.length === 0) {
+    wkEl.innerHTML = '<div style="font-size:12px;color:var(--ink-faint);">${strengths.length > 0 ? "Nothing critical!" : "Practice more to unlock"}</div>';
+  } else {
+    wkEl.innerHTML = weaknesses.map(m => `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:12px;color:var(--ink);font-weight:400;">${m.label}</div>
+        <div style="font-size:13px;font-family:'Playfair Display',serif;color:var(--wrong-txt);">${m.acc}%</div>
+      </div>`).join('');
+  }
+
+  // ── BAR BREAKDOWN ────────────────────────────────────────────
   const container = document.getElementById('stats-breakdown');
   container.innerHTML = '';
-  Object.keys(QUESTIONS).forEach(mod => {
-    const s = state.topicStats[mod];
-    const acc = s && s.answered > 0 ? Math.round(s.correct / s.answered * 100) : null;
-    const names = {
-      grab_bag:'Grab Bag', big_division:'Big Division', big_multiplication:'Big Multiplication',
-      small_multiplication:'Small Multiplication', percentages:'Percentages', pct_of_pct:'Percent × Percent',
-      market_math:'Market Math', break_even:'Break Evens', growth_estimation:'Growth Estimations',
-      time_conversion:'Time Conversions', npv:'NPV Calculations',
-      consulting:'Consulting Math', estimation:'Estimation', tips:'Tips & Discounts',
-      multiplication:'Multiplication', division:'Division', industry_retail:'Retail', industry_tech:'Tech / SaaS',
-    };
+  allMods.forEach(({ key, label }) => {
+    const s = state.topicStats[key];
+    const a = s && s.answered > 0 ? Math.round(s.correct / s.answered * 100) : null;
+    const reps = s?.reps || 0;
+    const barColor = a === null ? 'var(--blush)' : a >= 80 ? 'var(--sage)' : a >= 60 ? '#C9A84C' : '#D4897A';
     const card = document.createElement('div');
-    card.style.cssText = 'background:white;border-radius:10px;padding:14px 16px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.04);display:flex;justify-content:space-between;align-items:center;';
+    card.style.cssText = 'background:white;border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.045);';
     card.innerHTML = `
-      <div>
-        <div style="font-size:14px;font-weight:500;">${names[mod]}</div>
-        <div style="font-size:11px;color:var(--ink-faint);margin-top:2px;">${s ? (s.reps||0) + ' reps' : 'Not started'}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+        <div style="font-size:13px;font-weight:500;">${label}</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:10px;color:var(--ink-faint);">${reps} reps</span>
+          <span style="font-size:14px;font-family:'Playfair Display',serif;color:${barColor};font-weight:500;">${a !== null ? a + '%' : '—'}</span>
+        </div>
       </div>
-      <div style="text-align:right;">
-        <div style="font-size:16px;font-family:'Playfair Display',serif;color:${acc >= 80 ? 'var(--sage)' : acc >= 60 ? '#B8892A' : acc !== null ? 'var(--wrong)' : 'var(--ink-faint)'};">${acc !== null ? acc + '%' : '—'}</div>
-      </div>
-    `;
+      <div style="height:3px;background:var(--blush);border-radius:2px;">
+        <div style="height:100%;width:${a !== null ? a : 0}%;background:${barColor};border-radius:2px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);"></div>
+      </div>`;
     container.appendChild(card);
   });
 }
@@ -1395,16 +1708,15 @@ function startPractice(module) {
 
   let pool;
   if (module === 'grab_bag') {
-    // Pull 1-2 questions from each drill type, shuffle together
-    const drills = ['big_division','big_multiplication','small_multiplication','percentages','pct_of_pct','market_math','break_even','growth_estimation','time_conversion','npv'];
+    const drills = ['big_division','big_multiplication','small_multiplication','percentages','pct_of_pct','market_math','break_even','growth_estimation','time_conversion','npv','multiplication','division'];
     pool = [];
     drills.forEach(d => {
-      const src = QUESTIONS[d] || [];
-      const pick = [...src].sort(() => Math.random() - 0.5).slice(0, 2);
-      pool.push(...pick);
+      pool.push(...generatePool(d, 3).slice(0, 2));
     });
+    pool = pool.sort(() => Math.random() - 0.5);
   } else {
-    pool = QUESTIONS[module] || QUESTIONS.consulting;
+    pool = generatePool(module, len * 3);
+    if (!pool.length) pool = QUESTIONS[module] || [];
   }
 
   // Shuffle and pick
@@ -1454,6 +1766,7 @@ function renderQuestion() {
   input.className = 'answer-input';
   input.disabled = false;
   input.placeholder = 'your answer';
+  input.oninput = () => formatWithCommas(input);
   setTimeout(() => input.focus(), 80);
 
   renderDots();
@@ -1503,10 +1816,26 @@ function clearTimer() {
   fill.style.width = '100%';
 }
 
+function formatWithCommas(el) {
+  // Strip everything except digits, dot, minus
+  let raw = el.value.replace(/,/g, '');
+  const negative = raw.startsWith('-');
+  raw = raw.replace(/-/g, '');
+  const parts = raw.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const formatted = (negative ? '-' : '') + parts.join('.');
+  // Preserve cursor position
+  const selEnd = el.selectionEnd;
+  const oldLen = el.value.length;
+  el.value = formatted;
+  const diff = formatted.length - oldLen;
+  try { el.setSelectionRange(selEnd + diff, selEnd + diff); } catch(e) {}
+}
+
 function submitAnswer() {
   if (session.answered) return;
   const input = document.getElementById('answer-input');
-  const val = parseFloat(input.value);
+  const val = parseFloat(input.value.replace(/,/g, ''));
   if (isNaN(val) || input.value === '') { input.focus(); return; }
 
   session.answered = true;
@@ -1598,7 +1927,7 @@ function endSession() {
         <div style="font-size:16px;font-weight:600;color:${labelColor};flex-shrink:0;">${label}</div>
       </div>
       <div style="display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--ink-muted);">
-        <span>Your answer: <strong style="color:var(--ink);">${t.userAnswer}</strong></span>
+        <span>Your answer: <strong style="color:var(--ink);">${Number(t.userAnswer).toLocaleString()}</strong></span>
         <span>${t.elapsed.toFixed(1)}s</span>
       </div>
       ${q.trick ? `<div style="font-size:11px;color:var(--ink-muted);margin-top:6px;line-height:1.5;font-style:italic;">${q.trick}</div>` : ''}
