@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cyfer. — Train Your Thinking</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sage: #A7BFAE;
+    --sage-light: #DCE8E1;
+    --sage-pale: #E6EEF7;
+    --cream: #F7F5F2;
+    --blush: #EDE7DF;
+    --ink: #1C1C1C;
+    --ink-muted: #6B6B6B;
+    --ink-faint: #ABABAB;
+    --white: #FFFFFF;
+    --correct: #A7BFAE;
+    --wrong: #D4897A;
+    --r: 16px;
+    --r-sm: 10px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  /* PHONE SHELL */
+  .phone {
+    width: 390px;
+    min-height: 780px;
+    background: var(--cream);
+    border-radius: 44px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08), 0 32px 80px rgba(0,0,0,0.12);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* STATUS BAR */
+  .status {
+    padding: 14px 28px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  /* SCREENS */
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  /* SCROLL AREA */
+  .scroll { flex: 1; overflow-y: auto; padding: 0 24px 100px; }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* NAV BAR */
+  .nav {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: var(--cream);
+    border-top: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 12px;
+    z-index: 10;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--ink-faint);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-item.active { color: var(--ink); }
+  .nav-icon {
+    width: 22px; height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* TYPOGRAPHY */
+  .playfair { font-family: 'Playfair Display', serif; }
+  h1.display { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; line-height: 1.1; }
+  h2.section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 12px; }
+  .tagline { font-size: 13px; color: var(--ink-muted); font-weight: 300; margin-top: 2px; }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+  .card:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .card-left { display: flex; flex-direction: column; gap: 6px; }
+  .card-title { font-size: 16px; font-weight: 500; }
+  .card-sub { font-size: 12px; color: var(--ink-muted); }
+  .card-arrow {
+    width: 32px; height: 32px;
+    background: var(--cream);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-arrow svg { width: 14px; height: 14px; stroke: var(--ink-muted); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+  /* PROGRESS BAR */
+  .progress-bar { height: 3px; background: var(--blush); border-radius: 2px; margin-top: 8px; }
+  .progress-fill { height: 100%; background: var(--sage); border-radius: 2px; transition: width 0.4s ease; }
+
+  /* STATS ROW */
+  .stats-row { display: flex; gap: 12px; margin-bottom: 24px; }
+  .stat-box {
+    flex: 1;
+    background: var(--white);
+    border-radius: var(--r-sm);
+    padding: 14px 12px;
+    border: 1px solid rgba(0,0,0,0.04);
+    text-align: center;
+  }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--ink); }
+  .stat-lbl { font-size: 10px; color: var(--ink-faint); margin-top: 2px; letter-spacing: 0.04em; }
+
+  /* SKILL CHIP */
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--white);
+    color: var(--ink-muted);
+  }
+  .chip.active { background: var(--sage); color: var(--white); border-color: var(--sage); }
+
+  /* ICON BADGE */
+  .icon-badge {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+  .icon-badge svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* PRACTICE SCREEN */
+  .practice-header {
+    padding: 16px 24px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .back-btn {
+    width: 36px; height: 36px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(0,0,0,0.06);
+    cursor: pointer;
+  }
+  .back-btn svg { width: 16px; height: 16px; stroke: var(--ink); fill: none; stroke-width: 2; stroke-linecap: round; }
+  .practice-meta { flex: 1; }
+  .practice-topic { font-size: 13px; font-weight: 500; }
+  .practice-count { font-size: 11px; color: var(--ink-faint); }
+
+  /* QUESTION AREA */
+  .q-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 28px;
+    gap: 24px;
+  }
+  .q-context { font-size: 13px; color: var(--ink-muted); line-height: 1.6; background: var(--white); padding: 16px; border-radius: var(--r-sm); border: 1px solid rgba(0,0,0,0.04); }
+  .q-text { font-family: 'Playfair Display', serif; font-size: 30px; line-height: 1.2; text-align: center; }
+  .q-hint { font-size: 12px; color: var(--ink-faint); text-align: center; }
+
+  /* ANSWER INPUT */
+  .answer-area { padding: 0 24px 16px; flex-shrink: 0; }
+  .answer-input {
+    width: 100%;
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    text-align: center;
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: var(--r);
+    padding: 16px;
+    outline: none;
+    color: var(--ink);
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+  .answer-input:focus { border-color: var(--sage); }
+  .answer-input.correct { border-color: var(--correct); background: #F0F6F2; }
+  .answer-input.wrong { border-color: var(--wrong); background: #FDF3F1; }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: var(--sage);
+    color: var(--white);
+    border: none;
+    border-radius: var(--r);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:active { transform: scale(0.99); }
+  .btn-secondary {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--ink-muted);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: var(--r);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: var(--white); }
+
+  /* FEEDBACK PANEL */
+  .feedback {
+    padding: 16px;
+    border-radius: var(--r-sm);
+    margin-bottom: 12px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #EBF4EF; border: 1px solid #C8DFD0; }
+  .feedback.wrong { background: #FBF0ED; border: 1px solid #EACDC6; }
+  .feedback-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .feedback.correct .feedback-title { color: #4A7C5E; }
+  .feedback.wrong .feedback-title { color: #9B4A38; }
+  .feedback-body { font-size: 12px; color: var(--ink-muted); line-height: 1.6; }
+
+  /* TIMER BAR */
+  .timer-bar { height: 2px; background: var(--blush); position: relative; flex-shrink: 0; }
+  .timer-fill { height: 100%; background: var(--sage); width: 100%; transition: width linear; }
+
+  /* RESULT SCREEN ELEMENTS */
+  .result-score { text-align: center; padding: 32px 24px 24px; }
+  .score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 3px solid var(--sage-light);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .score-pct { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--ink); }
+  .score-lbl { font-size: 10px; color: var(--ink-faint); letter-spacing: 0.06em; }
+
+  /* LIBRARY SCREEN */
+  .topic-card {
+    background: var(--white);
+    border-radius: var(--r);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    transition: transform 0.15s;
+  }
+  .topic-card:hover { transform: translateY(-1px); }
+  .topic-info { flex: 1; }
+  .topic-name { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .topic-tag { font-size: 11px; color: var(--ink-faint); }
+  .topic-stats { text-align: right; }
+  .topic-acc { font-size: 13px; font-weight: 500; color: var(--sage); }
+  .topic-reps { font-size: 11px; color: var(--ink-faint); }
+
+  /* STATS SCREEN */
+  .streak-banner {
+    background: var(--sage);
+    border-radius: var(--r);
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--white);
+  }
+  .streak-num { font-family: 'Playfair Display', serif; font-size: 40px; line-height: 1; }
+  .streak-label { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+  .week-dots { display: flex; gap: 6px; }
+  .week-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .week-dot.done { background: var(--white); }
+
+  /* SECTION DIVIDER */
+  .section-gap { height: 24px; }
+
+  /* KEYBOARD HINT */
+  .kbd-hint { font-size: 11px; color: var(--ink-faint); text-align: center; margin-top: 8px; }
+
+  @media (max-width: 440px) {
+    body { padding: 0; align-items: stretch; }
+    .phone { width: 100%; border-radius: 0; min-height: 100vh; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="status">
+    <span>9:41</span>
+    <span>●●●</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════ HOME ═══════════════════════════════════════ -->
+  <div class="screen active" id="screen-home">
+    <div class="scroll">
+      <div style="padding-top:8px; margin-bottom:28px;">
+        <h1 class="display">Cyfer.</h1>
+        <p class="tagline">Train Your Thinking.</p>
+      </div>
+
+      <div style="margin-bottom:8px;">
+        <p style="font-size:20px; font-family:'Playfair Display',serif; font-weight:400; margin-bottom:20px;" id="greeting">Good evening.</p>
+      </div>
+
+      <!-- CONTINUE CARD -->
+      <div class="card" onclick="startPractice('consulting')">
+        <div class="card-left" style="flex:1;">
+          <div class="card-title">Continue</div>
+          <div class="card-sub" id="continue-sub">Consulting Math · Rep 1 of 10</div>
+          <div class="progress-bar"><div class="progress-fill" id="continue-progress" style="width:10%"></div></div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <!-- PRACTICE LIBRARY -->
+      <div class="card" onclick="showScreen('library')">
+        <div class="card-left">
+          <div class="card-title">Practice Library</div>
+          <div class="card-sub">17 Modules · 140+ Questions</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <!-- STATISTICS -->
+      <div class="card" onclick="showScreen('stats')">
+        <div class="card-left">
+          <div class="card-title">Statistics</div>
+          <div class="card-sub">Track your progress</div>
+        </div>
+        <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+
+      <!-- TODAY'S PROGRESS -->
+      <div class="section-gap"></div>
+      <h2 class="section-label">Today's Progress</h2>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num" id="home-acc">—</div>
+          <div class="stat-lbl">Accuracy</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="home-spd">—</div>
+          <div class="stat-lbl">Avg speed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="home-streak">0</div>
+          <div class="stat-lbl">Day streak</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <button class="nav-item active" onclick="showScreen('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </button>
+      <button class="nav-item" onclick="showScreen('library')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Library
+      </button>
+      <button class="nav-item" onclick="showScreen('stats')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Statistics
+      </button>
+      <button class="nav-item" onclick="showScreen('profile')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </button>
+    </nav>
+  </div>
+
+  <!-- ═══════════════════════════════════════ LIBRARY ═══════════════════════════════════════ -->
+  <div class="screen" id="screen-library">
+    <div class="practice-header">
+      <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="practice-meta">
+        <div class="practice-topic" style="font-size:18px; font-family:'Playfair Display',serif;">Practice Library</div>
+      </div>
+    </div>
+
+    <div class="scroll" style="padding-top:8px;">
+
+      <!-- GRAB BAG -->
+      <div class="topic-card" onclick="startPractice('grab_bag')" style="background:var(--ink);border-color:transparent;">
+        <div class="icon-badge" style="background:rgba(255,255,255,0.12); color:white;">
+          <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name" style="color:white;">Grab Bag</div>
+          <div class="topic-tag" style="color:rgba(255,255,255,0.55);">Random mix of all drill types</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-grab_bag-acc" style="color:rgba(255,255,255,0.7);">—</div>
+          <div class="topic-reps" id="lib-grab_bag-reps" style="color:rgba(255,255,255,0.4);">0 reps</div>
+        </div>
+      </div>
+
+      <div class="section-gap"></div>
+      <h2 class="section-label">Basic Math Drills</h2>
+
+      <div class="topic-card" onclick="startPractice('big_division')">
+        <div class="icon-badge" style="background:#EBF4EF; color:#2E6B4E;">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1.5" fill="currentColor"/><line x1="4" y1="12" x2="20" y2="12" stroke-width="2"/><circle cx="12" cy="18" r="1.5" fill="currentColor"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Big Division</div>
+          <div class="topic-tag">e.g. 100,000,000 ÷ 20,000</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-big_division-acc">—</div>
+          <div class="topic-reps" id="lib-big_division-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('big_multiplication')">
+        <div class="icon-badge" style="background:#EEF2FB; color:#3A4E8B;">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Big Multiplication</div>
+          <div class="topic-tag">e.g. 70,000 × 30,000</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-big_multiplication-acc">—</div>
+          <div class="topic-reps" id="lib-big_multiplication-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('small_multiplication')">
+        <div class="icon-badge" style="background:#F0F8F3; color:#2E7A5E;">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><line x1="12" y1="5" x2="12" y2="19"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Small Multiplication</div>
+          <div class="topic-tag">e.g. 800 × 20</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-small_multiplication-acc">—</div>
+          <div class="topic-reps" id="lib-small_multiplication-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('percentages')">
+        <div class="icon-badge" style="background:#EEF2FB; color:#4A5E9B;">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Percentages</div>
+          <div class="topic-tag">e.g. 65% of 30,000</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-percentages-acc">—</div>
+          <div class="topic-reps" id="lib-percentages-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('pct_of_pct')">
+        <div class="icon-badge" style="background:#F4EEFB; color:#6A3A9B;">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Percent × Percent</div>
+          <div class="topic-tag">e.g. 25% of 40%</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-pct_of_pct-acc">—</div>
+          <div class="topic-reps" id="lib-pct_of_pct-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('market_math')">
+        <div class="icon-badge" style="background:#FBF4EE; color:#8B5A2E;">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Market Math</div>
+          <div class="topic-tag">e.g. 200K = 5% → total market?</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-market_math-acc">—</div>
+          <div class="topic-reps" id="lib-market_math-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('break_even')">
+        <div class="icon-badge" style="background:#EEFBF8; color:#1A6B5A;">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="20" x2="21" y2="4"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Break Evens</div>
+          <div class="topic-tag">e.g. $10M invest, $X rev, $Y cost</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-break_even-acc">—</div>
+          <div class="topic-reps" id="lib-break_even-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('growth_estimation')">
+        <div class="icon-badge" style="background:#EBF4EF; color:#2E6B3E;">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Growth Estimations</div>
+          <div class="topic-tag">e.g. $100M × 15% YoY × 5 years</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-growth_estimation-acc">—</div>
+          <div class="topic-reps" id="lib-growth_estimation-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('time_conversion')">
+        <div class="icon-badge" style="background:#FBF0EE; color:#8B3A2E;">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Time Series Conversions</div>
+          <div class="topic-tag">e.g. $5K/day → annual?</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-time_conversion-acc">—</div>
+          <div class="topic-reps" id="lib-time_conversion-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('npv')">
+        <div class="icon-badge" style="background:#EEF2FB; color:#2A3E7A;">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">NPV Calculations</div>
+          <div class="topic-tag">e.g. CF $10M, 12% discount, 2% growth</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-npv-acc">—</div>
+          <div class="topic-reps" id="lib-npv-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="section-gap"></div>
+      <h2 class="section-label">Consulting & Finance</h2>
+
+      <div class="topic-card" onclick="startPractice('consulting')">
+        <div class="icon-badge" style="background:#EBF4EF; color:#4A7C5E;">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Consulting Math</div>
+          <div class="topic-tag">Market sizing · CAGR · Margins</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-consulting-acc">—</div>
+          <div class="topic-reps" id="lib-consulting-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('estimation')">
+        <div class="icon-badge" style="background:#FBF4EE; color:#9B6A3A;">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Estimation</div>
+          <div class="topic-tag">Fermi questions · Quick sizing</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-estimation-acc">—</div>
+          <div class="topic-reps" id="lib-estimation-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="section-gap"></div>
+      <h2 class="section-label">Everyday Life</h2>
+
+      <div class="topic-card" onclick="startPractice('tips')">
+        <div class="icon-badge" style="background:#F4EEFB; color:#7A4A9B;">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Tips & Discounts</div>
+          <div class="topic-tag">Restaurant · Shopping · Deals</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-tips-acc">—</div>
+          <div class="topic-reps" id="lib-tips-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('multiplication')">
+        <div class="icon-badge" style="background:#EEFBF4; color:#2E7A5E;">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><line x1="12" y1="5" x2="12" y2="19"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Multiplication</div>
+          <div class="topic-tag">Speed tables · Cross multiply</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-multiplication-acc">—</div>
+          <div class="topic-reps" id="lib-multiplication-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('division')">
+        <div class="icon-badge" style="background:#FBF0EE; color:#9B3A2E;">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="1" fill="currentColor"/><line x1="5" y1="12" x2="19" y2="12"/><circle cx="12" cy="18" r="1" fill="currentColor"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Division</div>
+          <div class="topic-tag">Big division · Fractions</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-division-acc">—</div>
+          <div class="topic-reps" id="lib-division-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="section-gap"></div>
+      <h2 class="section-label">Industry Drills</h2>
+
+      <div class="topic-card" onclick="startPractice('industry_retail')">
+        <div class="icon-badge" style="background:#FBF4EE; color:#8B5A2E;">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Retail</div>
+          <div class="topic-tag">Margin · Revenue/sqft · Conversion</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-industry_retail-acc">—</div>
+          <div class="topic-reps" id="lib-industry_retail-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div class="topic-card" onclick="startPractice('industry_tech')">
+        <div class="icon-badge" style="background:#EEF2FB; color:#2A3E7A;">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="topic-info">
+          <div class="topic-name">Tech / SaaS</div>
+          <div class="topic-tag">ARR · CAC/LTV · Churn · Valuation</div>
+        </div>
+        <div class="topic-stats">
+          <div class="topic-acc" id="lib-industry_tech-acc">—</div>
+          <div class="topic-reps" id="lib-industry_tech-reps">0 reps</div>
+        </div>
+      </div>
+
+      <div style="height:80px;"></div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item" onclick="showScreen('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </button>
+      <button class="nav-item active" onclick="showScreen('library')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Library
+      </button>
+      <button class="nav-item" onclick="showScreen('stats')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Statistics
+      </button>
+      <button class="nav-item" onclick="showScreen('profile')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </button>
+    </nav>
+  </div>
+
+  <!-- ═══════════════════════════════════════ PRACTICE ═══════════════════════════════════════ -->
+  <div class="screen" id="screen-practice">
+    <div class="practice-header">
+      <button class="back-btn" onclick="exitPractice()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="practice-meta">
+        <div class="practice-topic" id="p-topic">Consulting Math</div>
+        <div class="practice-count" id="p-count">Question 1 of 10</div>
+      </div>
+    </div>
+
+    <!-- Timer bar -->
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+
+    <!-- Session progress dots -->
+    <div style="padding: 12px 24px 0; display:flex; gap:6px;" id="q-dots"></div>
+
+    <!-- Question -->
+    <div class="q-area" id="q-area">
+      <div class="q-context" id="q-context" style="display:none;"></div>
+      <div class="q-text" id="q-text">Loading...</div>
+      <div class="q-hint" id="q-hint"></div>
+    </div>
+
+    <!-- Answer -->
+    <div class="answer-area">
+      <div class="feedback" id="feedback">
+        <div class="feedback-title" id="feedback-title"></div>
+        <div class="feedback-body" id="feedback-body"></div>
+      </div>
+      <input class="answer-input" id="answer-input" type="number" placeholder="your answer" autocomplete="off"/>
+      <p class="kbd-hint">Press Enter to submit</p>
+      <button class="btn-primary" id="submit-btn" onclick="submitAnswer()">
+        Check <svg style="width:16px;height:16px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="btn-secondary" id="next-btn" style="display:none;" onclick="nextQuestion()">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ RESULTS ═══════════════════════════════════════ -->
+  <div class="screen" id="screen-result">
+    <div class="scroll" style="padding-top:0;">
+      <div class="result-score">
+        <div class="score-circle">
+          <div class="score-pct" id="result-pct">—</div>
+          <div class="score-lbl">ACCURACY</div>
+        </div>
+        <h1 class="display" id="result-title">Well done.</h1>
+        <p style="font-size:13px; color:var(--ink-muted); margin-top:8px;" id="result-sub">Session complete</p>
+      </div>
+
+      <div style="padding: 0 24px;">
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-num" id="result-correct">—</div>
+            <div class="stat-lbl">Correct</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="result-spd">—</div>
+            <div class="stat-lbl">Avg speed</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="result-streak">—</div>
+            <div class="stat-lbl">Streak</div>
+          </div>
+        </div>
+
+        <!-- TRICK RECAP -->
+        <h2 class="section-label" style="margin-top:8px;">Key tricks from this session</h2>
+        <div id="result-tricks"></div>
+
+        <div style="margin-top:20px;">
+          <button class="btn-primary" onclick="startPractice(currentModule)">Practice again</button>
+          <button class="btn-secondary" onclick="showScreen('library')">Try another topic</button>
+          <button class="btn-secondary" onclick="showScreen('home')">Back to home</button>
+        </div>
+      </div>
+      <div style="height:40px;"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ STATS ═══════════════════════════════════════ -->
+  <div class="screen" id="screen-stats">
+    <div class="practice-header">
+      <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="practice-meta">
+        <div class="practice-topic" style="font-size:18px;font-family:'Playfair Display',serif;">Statistics</div>
+      </div>
+    </div>
+
+    <div class="scroll">
+      <!-- STREAK BANNER -->
+      <div class="streak-banner">
+        <div>
+          <div class="streak-num" id="stats-streak">0</div>
+          <div class="streak-label">day streak</div>
+        </div>
+        <div>
+          <div style="font-size:11px;opacity:0.7;margin-bottom:8px;text-align:right;">This week</div>
+          <div class="week-dots" id="week-dots">
+            <div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div>
+            <div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num" id="stats-total">0</div>
+          <div class="stat-lbl">Total reps</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="stats-acc">—</div>
+          <div class="stat-lbl">All-time acc.</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="stats-sessions">0</div>
+          <div class="stat-lbl">Sessions</div>
+        </div>
+      </div>
+
+      <h2 class="section-label">Accuracy by topic</h2>
+      <div id="stats-breakdown"></div>
+
+      <div style="height:80px;"></div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item" onclick="showScreen('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </button>
+      <button class="nav-item" onclick="showScreen('library')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Library
+      </button>
+      <button class="nav-item active" onclick="showScreen('stats')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Statistics
+      </button>
+      <button class="nav-item" onclick="showScreen('profile')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </button>
+    </nav>
+  </div>
+
+  <!-- ═══════════════════════════════════════ PROFILE ═══════════════════════════════════════ -->
+  <div class="screen" id="screen-profile">
+    <div class="practice-header">
+      <button class="back-btn" onclick="showScreen('home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="practice-meta">
+        <div class="practice-topic" style="font-size:18px;font-family:'Playfair Display',serif;">Profile</div>
+      </div>
+    </div>
+    <div class="scroll">
+      <div style="text-align:center;padding:24px 0 32px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--sage-light);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-family:'Playfair Display',serif;font-size:28px;color:var(--sage);">C</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;">Cyfer User</div>
+        <div style="font-size:12px;color:var(--ink-faint);margin-top:4px;">Consulting track</div>
+      </div>
+
+      <h2 class="section-label">Settings</h2>
+      <div class="card" style="cursor:default;">
+        <div class="card-left">
+          <div class="card-title" style="font-size:14px;">Session length</div>
+          <div class="card-sub">Questions per session</div>
+        </div>
+        <select id="session-length" style="border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:6px 10px;font-family:'Inter',sans-serif;font-size:13px;background:var(--cream);color:var(--ink);outline:none;">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+
+      <div class="card" style="cursor:default;">
+        <div class="card-left">
+          <div class="card-title" style="font-size:14px;">Show timer</div>
+          <div class="card-sub">Countdown bar during practice</div>
+        </div>
+        <div id="timer-toggle" onclick="toggleTimer()" style="width:44px;height:26px;border-radius:13px;background:var(--sage);cursor:pointer;position:relative;transition:background 0.2s;">
+          <div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;right:3px;transition:transform 0.2s;" id="timer-knob"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <button class="btn-secondary" onclick="resetData()" style="color:#C0564A;border-color:rgba(192,86,74,0.2);">Reset all progress</button>
+      </div>
+      <div style="height:80px;"></div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item" onclick="showScreen('home')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </button>
+      <button class="nav-item" onclick="showScreen('library')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Library
+      </button>
+      <button class="nav-item" onclick="showScreen('stats')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Statistics
+      </button>
+      <button class="nav-item active" onclick="showScreen('profile')">
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile
+      </button>
+    </nav>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// QUESTION BANK
+// ═══════════════════════════════════════════════════════════════
+const QUESTIONS = {
+  consulting: [
+    { q: "A market grows from $40B to $50B in 2 years. What is the approximate CAGR?", context: "Consulting shortcut: for small growth, CAGR ≈ total growth ÷ years.", answer: 12, tolerance: 2, hint: "Growth = 25%, over 2 years", trick: "CAGR shortcut: divide % growth by years for rough estimate. 25% ÷ 2 = ~12.5%" },
+    { q: "Revenue is $480M, costs are $360M. What is the operating margin?", answer: 25, tolerance: 1, hint: "Margin = (Rev − Cost) ÷ Rev × 100", trick: "480 − 360 = 120. 120 ÷ 480 = 0.25 = 25%" },
+    { q: "A company has $2.4B revenue growing at 15% per year. What is next year's revenue in $B?", answer: 2.76, tolerance: 0.05, hint: "2.4 × 1.15", trick: "2.4 × 1.15: first 2.4 × 0.1 = 0.24, then 2.4 × 0.05 = 0.12. Total = 2.76" },
+    { q: "Market size: 50M households, 30% buy the product, average spend $200/yr. Market = $?B", answer: 3, tolerance: 0.1, hint: "50M × 0.3 × 200 = ?", trick: "50M × 30% = 15M buyers. 15M × $200 = $3B. Clean Fermi." },
+    { q: "Gross profit is $180M on $600M revenue. What is gross margin %?", answer: 30, tolerance: 1, trick: "180 ÷ 600 = 0.3 = 30%. Divide top by bottom." },
+    { q: "Sales grew from 800 units to 1,000 units. What is the % increase?", answer: 25, tolerance: 1, trick: "200 ÷ 800 = 0.25 = 25%. Always divide by the original." },
+    { q: "Fixed costs $2M, variable cost $40/unit, price $90/unit. Break-even units?", context: "Break-even = Fixed costs ÷ Contribution margin", answer: 40000, tolerance: 500, hint: "Contribution margin = 90 − 40 = 50", trick: "2,000,000 ÷ 50 = 40,000 units." },
+    { q: "A client earns $5M EBITDA on $25M revenue. EBITDA margin?", answer: 20, tolerance: 1, trick: "5 ÷ 25 = 0.2 = 20%. Learn to divide by 25: multiply by 4, then divide by 100." },
+    { q: "Price drops 20%, volume increases 30%. Revenue change %?", answer: 4, tolerance: 1, hint: "New revenue = 0.8 × 1.3 = 1.04", trick: "0.8 × 1.3 = 1.04 → +4% net. Price × volume always multiply." },
+    { q: "Headcount cost: 200 employees, avg salary $80K, 30% benefits load. Total cost $M?", answer: 20.8, tolerance: 0.3, trick: "200 × 80K = $16M. × 1.3 = $20.8M." },
+  ],
+  percentages: [
+    { q: "What is 15% of $84?", answer: 12.6, tolerance: 0.5, trick: "15% = 10% + 5%. 10% of 84 = 8.4. Half that = 4.2. Total = 12.6" },
+    { q: "A $240 jacket is 30% off. Final price?", answer: 168, tolerance: 1, trick: "30% of 240 = 72. 240 − 72 = 168. Or: 70% × 240 = 168 directly." },
+    { q: "You tip 20% on a $65 bill. Tip amount?", answer: 13, tolerance: 0.5, trick: "20% = double 10%. 10% of 65 = 6.5. Double = $13." },
+    { q: "Item costs $45, marked up 40%. Sale price?", answer: 63, tolerance: 0.5, trick: "40% of 45 = 18. 45 + 18 = 63. Or 45 × 1.4 = 63." },
+    { q: "Score improved from 60 to 75. % improvement?", answer: 25, tolerance: 1, trick: "Increase = 15. 15 ÷ 60 = 0.25 = 25%." },
+    { q: "What is 8% of 350?", answer: 28, tolerance: 0.5, trick: "8% = 10% − 2%. 35 − 7 = 28." },
+    { q: "$120 after a 25% discount. Original price?", answer: 160, tolerance: 1, trick: "$120 = 75% of original. 120 ÷ 0.75 = 160. Or: 120 × (4/3) = 160." },
+    { q: "Sales tax is 8.5% on $200. Total bill?", answer: 217, tolerance: 0.5, trick: "8.5% of 200 = 17. 200 + 17 = $217." },
+    { q: "Revenue falls 15% then rises 15%. Net change?", answer: -2.25, tolerance: 0.5, hint: "Not zero — the base changes!", trick: "0.85 × 1.15 = 0.9775 → −2.25%. Percentages don't simply cancel." },
+    { q: "What is 35% of 80?", answer: 28, tolerance: 0.5, trick: "35% = 25% + 10%. 20 + 8 = 28. Or: flip it — 80% of 35 = 28 (same answer!)." },
+  ],
+  tips: [
+    { q: "Dinner bill: $86. You want to leave 18% tip. Tip amount?", answer: 15.48, tolerance: 1.5, trick: "18% = 15% + 3%. 15% of 86 ≈ 12.9. 3% ≈ 2.58. Total ≈ $15.48" },
+    { q: "Coffee shop: $4.80. Quick 20% tip?", answer: 0.96, tolerance: 0.1, trick: "Move decimal: $0.48 × 2 = $0.96" },
+    { q: "$350 item, 40% off sticker, then extra 10% at checkout. Final price?", answer: 189, tolerance: 2, hint: "Apply discounts one at a time, not 50%!", trick: "350 × 0.6 = 210. 210 × 0.9 = 189. Never add discounts together." },
+    { q: "3 items for $7 or 5 for $11. Which is cheaper per item?", answer: 2, tolerance: 0.1, hint: "Answer: 1=cheaper, 2=cheaper per item for 5-pack", trick: "3 for $7 = $2.33 each. 5 for $11 = $2.20 each. 5-pack wins." },
+    { q: "Splitting a $134 bill 4 ways. Each person pays?", answer: 33.5, tolerance: 0.5, trick: "134 ÷ 4: 120 ÷ 4 = 30, 14 ÷ 4 = 3.5. Total = $33.50" },
+    { q: "Gas: 12 gallons at $3.85/gallon. Total cost?", answer: 46.2, tolerance: 0.5, trick: "12 × 3.85: 12 × 4 = 48, minus 12 × 0.15 = 1.8. Total = $46.20" },
+    { q: "Groceries: $23, $14.50, $8, $6.25. Rough total?", answer: 52, tolerance: 2, trick: "Round each: 23 + 15 + 8 + 6 = 52. Rounding saves time, gets you close." },
+    { q: "Buy 2 get 1 free. You buy 6 items at $15 each. Total?", answer: 60, tolerance: 1, trick: "6 items, pay for 4 (2 free). 4 × $15 = $60." },
+  ],
+  estimation: [
+    { q: "Roughly how many golf balls fit in a school bus? (thousands)", answer: 500, tolerance: 300, hint: "Bus ≈ 2.5m × 2.5m × 8m. Golf ball ≈ 4cm diameter.", trick: "Bus ≈ 50 cubic meters. Golf ball ≈ 40cm³. Packing ~64%. ~500K balls." },
+    { q: "A city of 1 million people. Roughly how many dentists? (hundreds)", answer: 6, tolerance: 4, hint: "How many patients per dentist per year?", trick: "1 dentist serves ~1,600 patients. 1M ÷ 1,600 ≈ 600 dentists." },
+    { q: "US piano tuners? You estimate there are about 10,000. Reasonable? (1=yes, 2=no)", answer: 1, tolerance: 0, trick: "Classic Fermi. ~300M people, 1 per 100 households owns piano = 1M pianos, tuned every 2yr = 500K tunings/yr, 1 tuner does ~1,000/yr = ~500-1,000 tuners. 10,000 is high but within order of magnitude." },
+    { q: "Monthly revenue of a mid-size coffee shop ($K)?", answer: 40, tolerance: 20, hint: "Think: customers/day × avg spend × 30 days", trick: "150 customers/day × $9 avg × 30 = $40,500/month." },
+    { q: "Annual market for umbrellas in the US ($B)?", answer: 0.5, tolerance: 0.3, hint: "300M people, how many buy one per year?", trick: "~100M households, 25% buy/yr at $20 avg = $500M = $0.5B" },
+  ],
+  multiplication: [
+    { q: "48 × 25 = ?", answer: 1200, tolerance: 0, trick: "× 25 = × 100 ÷ 4. 48 × 100 = 4800 ÷ 4 = 1200." },
+    { q: "37 × 9 = ?", answer: 333, tolerance: 0, trick: "× 9 = × 10 − original. 370 − 37 = 333." },
+    { q: "23 × 21 = ?", answer: 483, tolerance: 0, trick: "Use (20+3)(20+1) = 400 + 20 + 60 + 3 = 483." },
+    { q: "15 × 15 = ?", answer: 225, tolerance: 0, trick: "Any n×n ending in 5: (n−5)(n+5) + 25. Or: 15² = (10+5)² = 100+100+25 = 225." },
+    { q: "64 × 5 = ?", answer: 320, tolerance: 0, trick: "× 5 = ÷ 2 × 10. 64 ÷ 2 = 32 × 10 = 320." },
+    { q: "99 × 7 = ?", answer: 693, tolerance: 0, trick: "99 × 7 = 100×7 − 7 = 700 − 7 = 693." },
+    { q: "125 × 8 = ?", answer: 1000, tolerance: 0, trick: "125 × 8 = 1000. Memorise this: 125 is 1/8 of 1000." },
+    { q: "33 × 33 = ?", answer: 1089, tolerance: 1, trick: "33² = 30² + 2(30)(3) + 9 = 900 + 180 + 9 = 1089." },
+    { q: "19 × 19 = ?", answer: 361, tolerance: 0, trick: "(20−1)² = 400 − 40 + 1 = 361." },
+    { q: "45 × 12 = ?", answer: 540, tolerance: 0, trick: "45 × 12 = 45 × 10 + 45 × 2 = 450 + 90 = 540." },
+  ],
+  division: [
+    { q: "840 ÷ 35 = ?", answer: 24, tolerance: 0, trick: "840 ÷ 35 = 84 ÷ 3.5 = 168 ÷ 7 = 24." },
+    { q: "1,800 ÷ 45 = ?", answer: 40, tolerance: 0, trick: "1800 ÷ 45 = 1800 ÷ 9 ÷ 5 = 200 ÷ 5 = 40." },
+    { q: "576 ÷ 24 = ?", answer: 24, tolerance: 0, trick: "576 ÷ 24: 24 × 20 = 480, 576 − 480 = 96, 96 ÷ 24 = 4. Total = 24." },
+    { q: "2,100 ÷ 14 = ?", answer: 150, tolerance: 0, trick: "2100 ÷ 14 = 2100 ÷ 7 ÷ 2 = 300 ÷ 2 = 150." },
+    { q: "390 ÷ 15 = ?", answer: 26, tolerance: 0, trick: "390 ÷ 15 = 390 ÷ 3 ÷ 5 = 130 ÷ 5 = 26." },
+    { q: "756 ÷ 4 = ?", answer: 189, tolerance: 0, trick: "756 ÷ 2 = 378, ÷ 2 again = 189. Always break division into steps." },
+    { q: "1,260 ÷ 28 = ?", answer: 45, tolerance: 0, trick: "1260 ÷ 28 = 630 ÷ 14 = 45." },
+    { q: "3.6 ÷ 0.12 = ?", answer: 30, tolerance: 0, trick: "Multiply both by 100: 360 ÷ 12 = 30. Always clear decimals first." },
+  ],
+
+  // ── BASIC MATH DRILLS ─────────────────────────────────────────
+
+  big_division: [
+    { q: "100,000,000 ÷ 20,000 = ?", answer: 5000, tolerance: 0, trick: "Cancel zeros: 100M ÷ 20K = 10,000 ÷ 2 = 5,000. Drop equal zeros from both sides." },
+    { q: "250,000,000 ÷ 50,000 = ?", answer: 5000, tolerance: 0, trick: "250M ÷ 50K = 25,000 ÷ 5 = 5,000." },
+    { q: "360,000 ÷ 4,000 = ?", answer: 90, tolerance: 0, trick: "360K ÷ 4K = 360 ÷ 4 = 90. Cancel the thousands." },
+    { q: "840,000,000 ÷ 120,000 = ?", answer: 7000, tolerance: 0, trick: "840M ÷ 120K = 8,400 ÷ 1.2 = 7,000. Or: 84 ÷ 12 = 7, then adjust zeros." },
+    { q: "1,200,000 ÷ 30,000 = ?", answer: 40, tolerance: 0, trick: "1.2M ÷ 30K = 1200 ÷ 30 = 40." },
+    { q: "6,000,000,000 ÷ 200,000 = ?", answer: 30000, tolerance: 0, trick: "6B ÷ 200K = 6,000,000 ÷ 200 = 30,000." },
+    { q: "450,000,000 ÷ 9,000 = ?", answer: 50000, tolerance: 0, trick: "450M ÷ 9K = 450,000 ÷ 9 = 50,000." },
+    { q: "720,000 ÷ 8,000 = ?", answer: 90, tolerance: 0, trick: "720 ÷ 8 = 90. The three zeros cancel." },
+    { q: "3,500,000,000 ÷ 700,000 = ?", answer: 5000, tolerance: 0, trick: "3.5B ÷ 700K = 3,500 ÷ 0.7 = 5,000. Or 35 ÷ 7 = 5, adjust zeros." },
+    { q: "180,000,000 ÷ 60,000 = ?", answer: 3000, tolerance: 0, trick: "180M ÷ 60K = 1,800 ÷ 0.6 = 3,000. Or 18 ÷ 6 = 3, adjust zeros." },
+  ],
+
+  big_multiplication: [
+    { q: "70,000 × 30,000 = ? (in billions)", answer: 2.1, tolerance: 0.05, hint: "Answer in billions", trick: "7 × 3 = 21. Count zeros: 4 + 4 = 8 zeros. 2,100,000,000 = $2.1B." },
+    { q: "400,000 × 500,000 = ? (in billions)", answer: 200, tolerance: 0, trick: "4 × 5 = 20. 5 + 5 = 10 zeros → 200,000,000,000 = $200B." },
+    { q: "60,000 × 80,000 = ? (in billions)", answer: 4.8, tolerance: 0.1, trick: "6 × 8 = 48. 4 + 4 = 8 zeros → 4,800,000,000 = $4.8B." },
+    { q: "25,000 × 40,000 = ? (in millions)", answer: 1000, tolerance: 0, trick: "25 × 4 = 100. 3 + 4 = 7 zeros → 1,000,000,000 = $1,000M = $1B." },
+    { q: "90,000 × 90,000 = ? (in billions)", answer: 8.1, tolerance: 0.1, trick: "9 × 9 = 81. 4 + 4 = 8 zeros → 8,100,000,000 = $8.1B." },
+    { q: "15,000 × 60,000 = ? (in millions)", answer: 900, tolerance: 0, trick: "15 × 6 = 90. 3 + 4 = 7 zeros → 900,000,000 = $900M." },
+    { q: "200,000 × 300,000 = ? (in billions)", answer: 60, tolerance: 0, trick: "2 × 3 = 6. 5 + 5 = 10 zeros → 60,000,000,000 = $60B." },
+    { q: "35,000 × 20,000 = ? (in millions)", answer: 700, tolerance: 0, trick: "35 × 2 = 70. 3 + 4 = 7 zeros → 700,000,000 = $700M." },
+  ],
+
+  small_multiplication: [
+    { q: "800 × 20 = ?", answer: 16000, tolerance: 0, trick: "8 × 2 = 16. Add the 3 zeros → 16,000." },
+    { q: "600 × 700 = ?", answer: 420000, tolerance: 0, trick: "6 × 7 = 42. Add 4 zeros → 420,000." },
+    { q: "350 × 40 = ?", answer: 14000, tolerance: 0, trick: "35 × 4 = 140. Add 2 zeros → 14,000." },
+    { q: "250 × 80 = ?", answer: 20000, tolerance: 0, trick: "25 × 8 = 200. Add 2 zeros → 20,000." },
+    { q: "900 × 900 = ?", answer: 810000, tolerance: 0, trick: "9 × 9 = 81. Add 4 zeros → 810,000." },
+    { q: "750 × 60 = ?", answer: 45000, tolerance: 0, trick: "75 × 6 = 450. Add 2 zeros → 45,000." },
+    { q: "120 × 500 = ?", answer: 60000, tolerance: 0, trick: "12 × 5 = 60. Add 3 zeros → 60,000." },
+    { q: "450 × 200 = ?", answer: 90000, tolerance: 0, trick: "45 × 2 = 90. Add 3 zeros → 90,000." },
+    { q: "375 × 80 = ?", answer: 30000, tolerance: 0, trick: "375 × 8 = 3,000. Add 1 zero → 30,000. Or: 375 × 80 = 375 × 8 × 10." },
+    { q: "550 × 60 = ?", answer: 33000, tolerance: 0, trick: "55 × 6 = 330. Add 2 zeros → 33,000." },
+  ],
+
+  pct_of_pct: [
+    { q: "25% of 40% = ?% (as a percent)", answer: 10, tolerance: 0, trick: "Multiply: 0.25 × 0.40 = 0.10 = 10%. Always convert to decimals first." },
+    { q: "50% of 30% = ?%", answer: 15, tolerance: 0, trick: "0.5 × 0.3 = 0.15 = 15%." },
+    { q: "20% of 60% = ?%", answer: 12, tolerance: 0, trick: "0.2 × 0.6 = 0.12 = 12%." },
+    { q: "75% of 80% = ?%", answer: 60, tolerance: 0, trick: "0.75 × 0.8 = 0.6 = 60%." },
+    { q: "33% of 90% ≈ ?%", answer: 30, tolerance: 2, trick: "1/3 × 90% = 30%. 33% ≈ 1/3 is a key consulting shortcut." },
+    { q: "15% of 40% = ?%", answer: 6, tolerance: 0.1, trick: "0.15 × 0.4 = 0.06 = 6%." },
+    { q: "10% of 70% = ?%", answer: 7, tolerance: 0, trick: "Easy: 10% of anything — just divide by 10. 70 ÷ 10 = 7%." },
+    { q: "60% of 60% = ?%", answer: 36, tolerance: 0, trick: "0.6 × 0.6 = 0.36 = 36%. Note: always less than either input." },
+    { q: "A market captured 40% of a segment that is 25% of total. What % of total?", answer: 10, tolerance: 0, trick: "0.4 × 0.25 = 0.10 = 10%. Classic two-step market share calc." },
+    { q: "Conversion rate is 30%, of those 50% buy again. Net repeat rate of all visitors?", answer: 15, tolerance: 0, trick: "0.3 × 0.5 = 0.15 = 15% of all visitors are repeat buyers." },
+  ],
+
+  market_math: [
+    { q: "200,000 is 5% of the market. Total market size?", answer: 4000000, tolerance: 0, hint: "Total = known ÷ %", trick: "200,000 ÷ 0.05 = 4,000,000. Or: 200K × 20 = 4M (since 5% × 20 = 100%)." },
+    { q: "Your revenue is $15M and you have 3% market share. Market size ($M)?", answer: 500, tolerance: 5, trick: "15 ÷ 0.03 = 500. Or: 15 × (100/3) ≈ 15 × 33.3 = $500M." },
+    { q: "$8M revenue is 0.4% market share. Market size ($B)?", answer: 2, tolerance: 0.1, trick: "8M ÷ 0.004 = $2,000M = $2B." },
+    { q: "500,000 units sold = 2% share. Total market (M units)?", answer: 25, tolerance: 0, trick: "500K ÷ 0.02 = 25,000,000 = 25M units." },
+    { q: "$50M revenue, 10% market share. If share doubles, new revenue ($M)?", answer: 100, tolerance: 0, trick: "10% → 20% share = doubling revenue. $50M × 2 = $100M." },
+    { q: "Market is $400M, growing 8% annually. Size in 3 years ($M)?", answer: 504, tolerance: 10, hint: "Compound: 400 × 1.08³", trick: "1.08³ ≈ 1.26. 400 × 1.26 = $504M. Quick: 8% × 3 = 24% simple ≈ $496M." },
+    { q: "Total market $2B. Top 3 players have 60% combined. Rest split evenly among 40 players. Each small player ($M)?", answer: 20, tolerance: 1, trick: "Remaining 40% = $800M ÷ 40 players = $20M each." },
+    { q: "120,000 customers = 15% of addressable market. TAM (customers)?", answer: 800000, tolerance: 5000, trick: "120K ÷ 0.15 = 800,000." },
+  ],
+
+  break_even: [
+    { q: "Investment $10M, revenue/unit $500, cost/unit $300. Break-even units?", context: "Break-even = Fixed cost ÷ (Price − Variable cost)", answer: 50000, tolerance: 0, trick: "Contribution = 500 − 300 = $200. 10,000,000 ÷ 200 = 50,000 units." },
+    { q: "Fixed costs $2.4M, price $120, variable cost $80. Break-even units?", answer: 60000, tolerance: 0, trick: "Contribution = 40. 2,400,000 ÷ 40 = 60,000 units." },
+    { q: "Break-even is 40,000 units, price $75, variable cost $25. Fixed costs ($M)?", answer: 2, tolerance: 0, hint: "Rearrange: Fixed = BE units × contribution", trick: "Contribution = $50. 40,000 × 50 = $2,000,000 = $2M." },
+    { q: "Fixed costs $5M, contribution margin 25%, price $200. Break-even revenue ($M)?", answer: 20, tolerance: 0, hint: "Break-even revenue = Fixed cost ÷ CM%", trick: "5M ÷ 0.25 = $20M revenue needed." },
+    { q: "New product: $15M capex, $60 variable cost, $150 price. Break-even units?", answer: 166667, tolerance: 2000, trick: "Contribution = $90. 15M ÷ 90 = 166,667 units." },
+    { q: "SaaS: $500K fixed monthly costs, $50 customer cost, $200 MRR per user. Break-even users?", answer: 3334, tolerance: 100, trick: "Contribution = 200 − 50 = $150. 500K ÷ 150 = 3,333 users." },
+    { q: "Price is $100, variable costs $60, fixed costs $800K. Break-even units?", answer: 20000, tolerance: 0, trick: "Contribution = $40. 800K ÷ 40 = 20,000 units." },
+    { q: "Factory costs $12M. Product sells for $400, costs $160 to make. Years to break even at 10,000 units/year?", answer: 5, tolerance: 0, trick: "Annual contribution = 240 × 10,000 = $2.4M. 12M ÷ 2.4M = 5 years." },
+  ],
+
+  growth_estimation: [
+    { q: "Revenue $100M growing 15% YoY. Revenue in 5 years ($M)?", context: "Use the Rule of 72 or compound: 1.15⁵ ≈ 2.0", answer: 201, tolerance: 5, trick: "1.15⁵ ≈ 2.01. $100M × 2.01 = ~$201M. Rule of 72: 72÷15 = 4.8 yrs to double." },
+    { q: "$50M revenue growing 20% annually. Revenue in 3 years ($M)?", answer: 86, tolerance: 3, trick: "1.2³ = 1.728. 50 × 1.728 = $86.4M ≈ $86M." },
+    { q: "Users: 2M today, 25% annual growth. Users in 4 years (M)?", answer: 4.88, tolerance: 0.2, trick: "1.25⁴ ≈ 2.44. 2M × 2.44 = 4.88M." },
+    { q: "$200M revenue, 10% growth. Revenue in 7 years ($M)?", answer: 390, tolerance: 15, hint: "Rule of 72: doubles every 7.2 years at 10%", trick: "1.1⁷ ≈ 1.95. Nearly doubles. $200M × 1.95 ≈ $390M." },
+    { q: "Revenue $80M, 30% growth. Revenue next year ($M)?", answer: 104, tolerance: 1, trick: "80 × 1.3 = 104. Simple one-year compound." },
+    { q: "$10M ARR, doubling annually. ARR in 3 years ($M)?", answer: 80, tolerance: 0, trick: "Year 1: $20M. Year 2: $40M. Year 3: $80M. Power of doubling." },
+    { q: "Market $500M, growing 8% for 5 years. Final size ($M)?", answer: 735, tolerance: 20, trick: "1.08⁵ ≈ 1.47. 500 × 1.47 = $735M." },
+    { q: "Company grew from $30M to $96M in 4 years. Approximate CAGR?", answer: 34, tolerance: 3, hint: "It more than tripled. CAGR = (96/30)^(1/4) − 1", trick: "96/30 = 3.2×. Cube root of 3.2 ≈ 1.47. Wait — 4th root. ≈ 1.34 → ~34% CAGR." },
+  ],
+
+  time_conversion: [
+    { q: "You make $5,000/day. Annual income ($M)?", answer: 1.825, tolerance: 0.05, hint: "365 days in a year", trick: "5,000 × 365 = $1,825,000 = $1.825M." },
+    { q: "Revenue $120M/year. Monthly revenue ($M)?", answer: 10, tolerance: 0, trick: "120 ÷ 12 = $10M/month." },
+    { q: "$600K annual salary. Monthly take-home (pre-tax, $K)?", answer: 50, tolerance: 0, trick: "600 ÷ 12 = $50K/month." },
+    { q: "Store earns $2,000/hour, open 10hrs/day, 300 days/year. Annual revenue ($M)?", answer: 6, tolerance: 0, trick: "2,000 × 10 × 300 = 6,000,000 = $6M." },
+    { q: "$1B annual revenue. Daily revenue ($M)?", answer: 2.74, tolerance: 0.1, trick: "1,000 ÷ 365 ≈ $2.74M/day." },
+    { q: "SaaS: $240/year subscription. Monthly equivalent ($)?", answer: 20, tolerance: 0, trick: "240 ÷ 12 = $20/month." },
+    { q: "Worker costs $150K/year fully loaded. Cost per working day ($)?", answer: 600, tolerance: 10, hint: "~250 working days/year", trick: "150,000 ÷ 250 = $600/day." },
+    { q: "Factory runs 24/7. Produces 480 units/hour. Annual production (M units)?", answer: 4.2, tolerance: 0.1, trick: "480 × 24 × 365 = 4,204,800 ≈ 4.2M units." },
+    { q: "$10M/year revenue. Revenue per minute ($)?", answer: 19, tolerance: 1, hint: "Minutes in a year ≈ 525,600", trick: "10M ÷ 525,600 ≈ $19/minute." },
+    { q: "Hourly wage $45. Annual salary (full-time, $K)?", answer: 93.6, tolerance: 1, hint: "2,080 working hours/year", trick: "45 × 2,080 = $93,600." },
+  ],
+
+  npv: [
+    { q: "Annual cash flow $10M, discount rate 12%, growth 2%. NPV ($M)?", context: "Gordon Growth Model: NPV = CF ÷ (r − g)", answer: 100, tolerance: 5, trick: "10M ÷ (12% − 2%) = 10M ÷ 10% = $100M. The Gordon Growth Model." },
+    { q: "CF $5M/yr, discount rate 10%, no growth. NPV ($M)?", context: "Perpetuity: NPV = CF ÷ r", answer: 50, tolerance: 1, trick: "5M ÷ 0.10 = $50M. Zero-growth perpetuity." },
+    { q: "CF $20M, discount rate 8%, growth 3%. NPV ($M)?", answer: 400, tolerance: 10, trick: "20M ÷ (8% − 3%) = 20M ÷ 5% = $400M." },
+    { q: "CF $8M, discount rate 15%, growth 5%. NPV ($M)?", answer: 80, tolerance: 3, trick: "8M ÷ (15% − 5%) = 8M ÷ 10% = $80M." },
+    { q: "You receive $1M in exactly 1 year. Discount rate 10%. PV today ($K)?", answer: 909, tolerance: 10, trick: "PV = 1,000,000 ÷ 1.10 = $909,091 ≈ $909K." },
+    { q: "CF $3M next year, discount rate 12%. PV ($M)?", answer: 2.68, tolerance: 0.05, trick: "3 ÷ 1.12 = $2.68M." },
+    { q: "Project: $50M investment today, returns $10M/yr for 8 years, 10% discount. Roughly worthwhile?", context: "PV annuity factor at 10% for 8 years ≈ 5.3", answer: 1, tolerance: 0, hint: "1=yes, 2=no", trick: "$10M × 5.3 = $53M PV > $50M cost. Yes, marginally worthwhile." },
+    { q: "CF $15M, discount rate 20%, growth 5%. NPV ($M)?", answer: 100, tolerance: 5, trick: "15M ÷ (20% − 5%) = 15M ÷ 15% = $100M." },
+  ],
+
+  industry_retail: [
+    { q: "Store has 500 SKUs, avg price $30, sells 60% of inventory monthly. Monthly revenue ($K)?", answer: 9, tolerance: 0.5, trick: "500 × 30 × 0.6 = $9,000 = $9K." },
+    { q: "Retail margin is 40%. Wholesale cost $60. Retail price?", answer: 100, tolerance: 0, trick: "If margin = 40%, cost = 60% of price. 60 ÷ 0.6 = $100." },
+    { q: "10,000 sq ft store, $400 sales/sq ft/yr. Annual revenue ($M)?", answer: 4, tolerance: 0, trick: "10,000 × 400 = $4,000,000 = $4M." },
+    { q: "Black Friday: normal daily sales $80K, up 320%. Black Friday sales ($K)?", answer: 336, tolerance: 5, trick: "Up 320% means × 4.2. 80 × 4.2 = $336K. Or: 80 + 80×3.2 = 80+256 = $336K." },
+    { q: "Online store: 100K visitors/month, 3% conversion, $85 avg order. Monthly revenue ($K)?", answer: 255, tolerance: 5, trick: "100K × 0.03 × 85 = 3,000 × 85 = $255K." },
+    { q: "Shrinkage (theft/loss) is 1.5% of $2M annual sales. Annual loss ($K)?", answer: 30, tolerance: 1, trick: "2,000,000 × 0.015 = $30,000 = $30K." },
+    { q: "COGS is 55% of revenue. Revenue $400K. Gross profit ($K)?", answer: 180, tolerance: 0, trick: "Gross profit = 45% of 400K = $180K." },
+  ],
+
+  industry_tech: [
+    { q: "SaaS: 2,000 customers, $500 MRR each. Annual Recurring Revenue ($M)?", answer: 12, tolerance: 0, trick: "2,000 × 500 × 12 = $12,000,000 = $12M ARR." },
+    { q: "CAC $300, LTV $1,800. LTV:CAC ratio?", answer: 6, tolerance: 0, trick: "1800 ÷ 300 = 6x. Target is typically 3x or higher." },
+    { q: "Monthly churn 2%, starting 10,000 users. Users after 6 months?", answer: 8858, tolerance: 200, hint: "0.98⁶ ≈ 0.885", trick: "0.98⁶ ≈ 0.886. 10,000 × 0.886 ≈ 8,858 users." },
+    { q: "App: 500K downloads, 20% DAU, avg 3 ads/session, $0.01 CPM. Daily ad revenue ($)?", answer: 3000, tolerance: 100, hint: "CPM = per 1,000 impressions", trick: "DAU = 100K. Impressions = 100K × 3 = 300K. 300K × $0.01/CPM = $3K." },
+    { q: "Server costs $0.05/user/month, 40K users. Annual server cost ($K)?", answer: 24, tolerance: 0, trick: "0.05 × 40,000 × 12 = $24,000 = $24K." },
+    { q: "Series A: $10M at $40M pre-money valuation. Investor ownership %?", answer: 20, tolerance: 0, trick: "Post-money = $50M. Investor gets 10/50 = 20%." },
+    { q: "ARR $8M, growing 80% YoY, 8x ARR multiple. Valuation ($M)?", answer: 64, tolerance: 0, trick: "8M × 8 = $64M. Common SaaS valuation: ARR × multiple." },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let state = {
+  streak: 0,
+  sessions: 0,
+  totalCorrect: 0,
+  totalAnswered: 0,
+  topicStats: {},
+  timerEnabled: true,
+  lastPracticeDate: null,
+};
+
+let session = {
+  module: '',
+  questions: [],
+  current: 0,
+  correct: 0,
+  times: [],
+  startTime: null,
+  answered: false,
+  sessionTricks: [],
+  timerInterval: null,
+};
+
+let currentModule = 'consulting';
+
+// Load from localStorage
+function loadState() {
+  try {
+    const s = localStorage.getItem('cyfer_state');
+    if (s) state = { ...state, ...JSON.parse(s) };
+  } catch(e) {}
+}
+
+function saveState() {
+  try { localStorage.setItem('cyfer_state', JSON.stringify(state)); } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  if (name === 'stats') updateStatsScreen();
+  if (name === 'home') updateHomeScreen();
+  if (name === 'library') updateLibraryScreen();
+  // sync nav
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+}
+
+function updateHomeScreen() {
+  const h = new Date().getHours();
+  const greet = h < 12 ? 'Good morning.' : h < 17 ? 'Good afternoon.' : 'Good evening.';
+  document.getElementById('greeting').textContent = greet;
+
+  if (state.totalAnswered > 0) {
+    document.getElementById('home-acc').textContent = Math.round(state.totalCorrect / state.totalAnswered * 100) + '%';
+  }
+  document.getElementById('home-streak').textContent = state.streak;
+
+  // continue card progress
+  const reps = Object.values(state.topicStats).reduce((a,b) => a + (b.reps || 0), 0);
+  const pct = Math.min(100, (reps / 50) * 100);
+  document.getElementById('continue-progress').style.width = pct + '%';
+  document.getElementById('continue-sub').textContent = `${currentModule === 'consulting' ? 'Consulting Math' : 'Practice'} · ${reps} reps done`;
+}
+
+function updateLibraryScreen() {
+  Object.keys(QUESTIONS).forEach(mod => {
+    const s = state.topicStats[mod];
+    const accEl = document.getElementById('lib-' + mod + '-acc');
+    const repEl = document.getElementById('lib-' + mod + '-reps');
+    if (accEl && s && s.answered > 0) {
+      accEl.textContent = Math.round(s.correct / s.answered * 100) + '%';
+    }
+    if (repEl && s) repEl.textContent = (s.reps || 0) + ' reps';
+  });
+}
+
+function updateStatsScreen() {
+  document.getElementById('stats-streak').textContent = state.streak;
+  document.getElementById('stats-total').textContent = state.totalAnswered;
+  document.getElementById('stats-sessions').textContent = state.sessions;
+
+  if (state.totalAnswered > 0) {
+    document.getElementById('stats-acc').textContent = Math.round(state.totalCorrect / state.totalAnswered * 100) + '%';
+  }
+
+  // week dots
+  const today = new Date().getDay();
+  const dots = document.getElementById('week-dots').querySelectorAll('.week-dot');
+  if (state.streak > 0) {
+    for (let i = 0; i < Math.min(state.streak, 7); i++) {
+      dots[6 - i] && dots[6 - i].classList.add('done');
+    }
+  }
+
+  // breakdown
+  const container = document.getElementById('stats-breakdown');
+  container.innerHTML = '';
+  Object.keys(QUESTIONS).forEach(mod => {
+    const s = state.topicStats[mod];
+    const acc = s && s.answered > 0 ? Math.round(s.correct / s.answered * 100) : null;
+    const names = {
+      grab_bag:'Grab Bag', big_division:'Big Division', big_multiplication:'Big Multiplication',
+      small_multiplication:'Small Multiplication', percentages:'Percentages', pct_of_pct:'Percent × Percent',
+      market_math:'Market Math', break_even:'Break Evens', growth_estimation:'Growth Estimations',
+      time_conversion:'Time Conversions', npv:'NPV Calculations',
+      consulting:'Consulting Math', estimation:'Estimation', tips:'Tips & Discounts',
+      multiplication:'Multiplication', division:'Division', industry_retail:'Retail', industry_tech:'Tech / SaaS',
+    };
+    const card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:10px;padding:14px 16px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.04);display:flex;justify-content:space-between;align-items:center;';
+    card.innerHTML = `
+      <div>
+        <div style="font-size:14px;font-weight:500;">${names[mod]}</div>
+        <div style="font-size:11px;color:var(--ink-faint);margin-top:2px;">${s ? (s.reps||0) + ' reps' : 'Not started'}</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:16px;font-family:'Playfair Display',serif;color:${acc >= 80 ? 'var(--sage)' : acc >= 60 ? '#B8892A' : acc !== null ? 'var(--wrong)' : 'var(--ink-faint)'};">${acc !== null ? acc + '%' : '—'}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PRACTICE ENGINE
+// ═══════════════════════════════════════════════════════════════
+function startPractice(module) {
+  currentModule = module;
+  const len = parseInt(document.getElementById('session-length')?.value || 10);
+
+  let pool;
+  if (module === 'grab_bag') {
+    // Pull 1-2 questions from each drill type, shuffle together
+    const drills = ['big_division','big_multiplication','small_multiplication','percentages','pct_of_pct','market_math','break_even','growth_estimation','time_conversion','npv'];
+    pool = [];
+    drills.forEach(d => {
+      const src = QUESTIONS[d] || [];
+      const pick = [...src].sort(() => Math.random() - 0.5).slice(0, 2);
+      pool.push(...pick);
+    });
+  } else {
+    pool = QUESTIONS[module] || QUESTIONS.consulting;
+  }
+
+  // Shuffle and pick
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  session = {
+    module,
+    questions: shuffled.slice(0, Math.min(len, pool.length)),
+    current: 0,
+    correct: 0,
+    times: [],
+    answered: false,
+    sessionTricks: [],
+    timerInterval: null,
+  };
+
+  showScreen('practice');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = session.questions[session.current];
+  const total = session.questions.length;
+
+  document.getElementById('p-topic').textContent = getTopicName(session.module);
+  document.getElementById('p-count').textContent = `Question ${session.current + 1} of ${total}`;
+
+  // Context
+  const ctxEl = document.getElementById('q-context');
+  if (q.context) {
+    ctxEl.textContent = q.context;
+    ctxEl.style.display = 'block';
+  } else {
+    ctxEl.style.display = 'none';
+  }
+
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-hint').textContent = q.hint ? '💡 ' + q.hint : '';
+
+  // Input
+  const input = document.getElementById('answer-input');
+  input.value = '';
+  input.className = 'answer-input';
+  input.disabled = false;
+  input.placeholder = 'your answer';
+  input.focus();
+
+  // Buttons
+  document.getElementById('submit-btn').style.display = 'flex';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // Feedback
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.style.display = 'none';
+
+  // Dots
+  renderDots();
+
+  // Timer
+  startTimer();
+
+  session.answered = false;
+  session.startTime = Date.now();
+}
+
+function renderDots() {
+  const container = document.getElementById('q-dots');
+  container.innerHTML = '';
+  session.questions.forEach((_, i) => {
+    const dot = document.createElement('div');
+    const size = 8;
+    dot.style.cssText = `width:${size}px;height:${size}px;border-radius:50%;transition:background 0.3s;flex-shrink:0;`;
+    if (i < session.current) {
+      dot.style.background = session.times[i] && session.times[i].correct ? 'var(--sage)' : 'var(--wrong)';
+    } else if (i === session.current) {
+      dot.style.background = 'var(--ink)';
+    } else {
+      dot.style.background = 'var(--blush)';
+    }
+    container.appendChild(dot);
+  });
+}
+
+function startTimer() {
+  clearTimer();
+  if (!state.timerEnabled) {
+    document.getElementById('timer-fill').style.width = '100%';
+    return;
+  }
+  const duration = 30000;
+  const fill = document.getElementById('timer-fill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  setTimeout(() => {
+    fill.style.transition = `width ${duration}ms linear`;
+    fill.style.width = '0%';
+  }, 50);
+}
+
+function clearTimer() {
+  const fill = document.getElementById('timer-fill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+}
+
+function submitAnswer() {
+  if (session.answered) return;
+  const input = document.getElementById('answer-input');
+  const val = parseFloat(input.value);
+  if (isNaN(val)) { input.focus(); return; }
+
+  session.answered = true;
+  clearTimer();
+
+  const q = session.questions[session.current];
+  const elapsed = (Date.now() - session.startTime) / 1000;
+  const correct = Math.abs(val - q.answer) <= (q.tolerance || 0);
+
+  session.times.push({ correct, elapsed });
+  if (correct) session.correct++;
+  if (q.trick) session.sessionTricks.push(q.trick);
+
+  // Visual feedback
+  input.className = 'answer-input ' + (correct ? 'correct' : 'wrong');
+  input.disabled = true;
+
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'block';
+  if (correct) {
+    fb.className = 'feedback show correct';
+    document.getElementById('feedback-title').textContent = `Correct! ${elapsed.toFixed(1)}s`;
+    document.getElementById('feedback-body').textContent = q.trick || 'Great work.';
+  } else {
+    fb.className = 'feedback show wrong';
+    document.getElementById('feedback-title').textContent = `Answer: ${q.answer}`;
+    document.getElementById('feedback-body').textContent = q.trick || 'Keep practising.';
+  }
+
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'block';
+
+  renderDots();
+}
+
+function nextQuestion() {
+  session.current++;
+  if (session.current >= session.questions.length) {
+    endSession();
+  } else {
+    renderQuestion();
+  }
+}
+
+function endSession() {
+  clearTimer();
+
+  // Update state
+  const total = session.questions.length;
+  const pct = Math.round(session.correct / total * 100);
+  const avgTime = session.times.reduce((a,b) => a + b.elapsed, 0) / session.times.length;
+
+  state.totalAnswered += total;
+  state.totalCorrect += session.correct;
+  state.sessions++;
+
+  if (!state.topicStats[session.module]) state.topicStats[session.module] = { correct: 0, answered: 0, reps: 0 };
+  state.topicStats[session.module].correct += session.correct;
+  state.topicStats[session.module].answered += total;
+  state.topicStats[session.module].reps += total;
+
+  // Streak
+  const today = new Date().toDateString();
+  if (state.lastPracticeDate !== today) {
+    state.streak = state.lastPracticeDate === new Date(Date.now() - 86400000).toDateString() ? state.streak + 1 : 1;
+    state.lastPracticeDate = today;
+  }
+
+  saveState();
+
+  // Show result
+  document.getElementById('result-pct').textContent = pct + '%';
+  document.getElementById('result-correct').textContent = session.correct + '/' + total;
+  document.getElementById('result-spd').textContent = avgTime.toFixed(1) + 's';
+  document.getElementById('result-streak').textContent = state.streak;
+
+  const titles = { 0: 'Keep going.', 60: 'Good start.', 75: 'Solid work.', 90: 'Excellent.', 100: 'Perfect.' };
+  const t = Object.keys(titles).filter(k => pct >= k).pop();
+  document.getElementById('result-title').textContent = titles[t];
+  document.getElementById('result-sub').textContent = `${session.correct} of ${total} correct · avg ${avgTime.toFixed(1)}s`;
+
+  // Tricks recap
+  const tricksEl = document.getElementById('result-tricks');
+  tricksEl.innerHTML = '';
+  const shown = [...new Set(session.sessionTricks)].slice(0, 3);
+  shown.forEach(trick => {
+    const el = document.createElement('div');
+    el.style.cssText = 'background:white;border-radius:10px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(0,0,0,0.04);font-size:12px;color:var(--ink-muted);line-height:1.6;';
+    el.textContent = trick;
+    tricksEl.appendChild(el);
+  });
+
+  // Home stats
+  document.getElementById('home-acc').textContent = Math.round(state.totalCorrect / state.totalAnswered * 100) + '%';
+  document.getElementById('home-spd').textContent = avgTime.toFixed(1) + 's';
+  document.getElementById('home-streak').textContent = state.streak;
+
+  showScreen('result');
+}
+
+function exitPractice() {
+  clearTimer();
+  showScreen(state.sessions > 0 ? 'home' : 'library');
+}
+
+function getTopicName(mod) {
+  const names = {
+    grab_bag:'Grab Bag',
+    big_division:'Big Division', big_multiplication:'Big Multiplication', small_multiplication:'Small Multiplication',
+    percentages:'Percentages', pct_of_pct:'Percent × Percent',
+    market_math:'Market Math', break_even:'Break Evens',
+    growth_estimation:'Growth Estimations', time_conversion:'Time Conversions', npv:'NPV Calculations',
+    consulting:'Consulting Math', estimation:'Estimation',
+    tips:'Tips & Discounts', multiplication:'Multiplication', division:'Division',
+    industry_retail:'Retail', industry_tech:'Tech / SaaS',
+  };
+  return names[mod] || mod;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════════════════════
+function toggleTimer() {
+  state.timerEnabled = !state.timerEnabled;
+  const track = document.getElementById('timer-toggle');
+  const knob = document.getElementById('timer-knob');
+  track.style.background = state.timerEnabled ? 'var(--sage)' : 'var(--ink-faint)';
+  knob.style.transform = state.timerEnabled ? 'translateX(0)' : 'translateX(-18px)';
+  saveState();
+}
+
+function resetData() {
+  if (confirm('Reset all progress? This cannot be undone.')) {
+    state = { streak: 0, sessions: 0, totalCorrect: 0, totalAnswered: 0, topicStats: {}, timerEnabled: true, lastPracticeDate: null };
+    saveState();
+    updateHomeScreen();
+    alert('Progress reset.');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const practice = document.getElementById('screen-practice').classList.contains('active');
+    if (!practice) return;
+    if (!session.answered) submitAnswer();
+    else nextQuestion();
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+loadState();
+updateHomeScreen();
+</script>
+</body>
+</html>
