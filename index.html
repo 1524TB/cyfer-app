@@ -318,15 +318,94 @@ h2.sl{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:upperc
 }
 .kbd-placeholder{font-size:16px;color:var(--dust);font-family:'Inter',sans-serif;font-weight:300;}
 
+/* ACCESS GATE */
+.gate-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.18);
+  transition:background .2s,border-color .2s;
+}
+.gate-dot.filled{background:#C87941;border-color:#C87941;box-shadow:0 0 10px rgba(200,121,65,0.5);}
+.gate-dot.error{background:#9B4438;border-color:#9B4438;}
+.gate-key{
+  height:58px;border-radius:14px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.85);
+  font-family:'Inter',sans-serif;font-size:22px;font-weight:300;
+  cursor:pointer;
+  transition:background .1s,transform .08s;
+  -webkit-tap-highlight-color:transparent;
+}
+.gate-key:active{background:rgba(255,255,255,0.14);transform:scale(0.94);}
+.gate-key-del{font-size:18px;color:rgba(255,255,255,0.45);}
+.gate-key-enter{
+  background:linear-gradient(135deg,#C87941 0%,#A05E28 100%);
+  color:white;font-size:20px;font-weight:400;
+  border-color:rgba(200,121,65,0.4);
+  box-shadow:0 4px 16px rgba(200,121,65,0.3);
+}
+.gate-key-enter:active{transform:scale(0.94);}
+@keyframes gateShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.gate-shake{animation:gateShake .4s ease;}
+@keyframes gateFadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.04)}}
+.gate-exit{animation:gateFadeOut .5s var(--ease) forwards;}
 @media(max-width:440px){
   body{padding:0;align-items:stretch;background:linear-gradient(175deg,#C8CFC4 0%,#A8B5B0 100%);}
   .phone{width:100%;border-radius:0;min-height:100vh;box-shadow:none;}
   .phone::before{border-radius:0;}
+  #gate{border-radius:0;}
 }
 </style>
 </head>
 <body>
 <div class="phone">
+
+<!-- ═══════════ ACCESS GATE ═══════════ -->
+<div id="gate" style="
+  position:absolute;inset:0;z-index:9999;
+  background:linear-gradient(160deg,#2E2820 0%,#1E1C18 50%,#161410 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 32px;text-align:center;
+">
+  <!-- Subtle grain overlay -->
+  <div style="position:absolute;inset:0;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E\");pointer-events:none;border-radius:50px;"></div>
+
+  <!-- Logo -->
+  <div style="margin-bottom:8px;font-family:'Playfair Display',serif;font-size:48px;font-weight:400;color:#C87941;letter-spacing:-0.02em;position:relative;">Cyfer.</div>
+  <div style="font-size:13px;color:rgba(255,255,255,0.35);font-weight:300;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:56px;position:relative;">Private Beta</div>
+
+  <!-- Code input area -->
+  <div style="width:100%;position:relative;">
+    <!-- Display dots -->
+    <div id="gate-dots" style="display:flex;gap:14px;justify-content:center;margin-bottom:28px;">
+      <div class="gate-dot"></div><div class="gate-dot"></div>
+      <div class="gate-dot"></div><div class="gate-dot"></div>
+      <div class="gate-dot"></div><div class="gate-dot"></div>
+    </div>
+
+    <!-- Error message -->
+    <div id="gate-error" style="font-size:12px;color:#C87941;margin-bottom:16px;min-height:18px;letter-spacing:0.04em;opacity:0;transition:opacity .3s;"></div>
+
+    <!-- Custom numpad -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
+      <button class="gate-key" onclick="gateTap('1')">1</button>
+      <button class="gate-key" onclick="gateTap('2')">2</button>
+      <button class="gate-key" onclick="gateTap('3')">3</button>
+      <button class="gate-key" onclick="gateTap('4')">4</button>
+      <button class="gate-key" onclick="gateTap('5')">5</button>
+      <button class="gate-key" onclick="gateTap('6')">6</button>
+      <button class="gate-key" onclick="gateTap('7')">7</button>
+      <button class="gate-key" onclick="gateTap('8')">8</button>
+      <button class="gate-key" onclick="gateTap('9')">9</button>
+      <button class="gate-key gate-key-del" onclick="gateTap('del')">⌫</button>
+      <button class="gate-key" onclick="gateTap('0')">0</button>
+      <button class="gate-key gate-key-enter" onclick="gateSubmit()">→</button>
+    </div>
+  </div>
+
+  <div style="position:relative;font-size:11px;color:rgba(255,255,255,0.2);margin-top:24px;letter-spacing:0.04em;">Enter your invite code to continue</div>
+</div>
 
 <!-- HOME -->
 <div class="screen active" id="screen-home">
@@ -1630,8 +1709,128 @@ function resetData(){
   }
 }
 
-// ═══════════════════ KEYBOARD ═══════════════════
-document.addEventListener('keydown',e=>{
+// ═══════════════════ ACCESS GATE ═══════════════════
+// Add or remove codes here — each is a 6-digit string
+// Share individually so you can identify who has which code
+const VALID_CODES = [
+  '126225', // Code 01
+  '131244', // Code 02
+  '133326', // Code 03
+  '191161', // Code 04
+  '194720', // Code 05
+  '198246', // Code 06
+  '207473', // Code 07
+  '216739', // Code 08
+  '241506', // Code 09
+  '246316', // Code 10
+  '305861', // Code 11
+  '329258', // Code 12
+  '334053', // Code 13
+  '356787', // Code 14
+  '388389', // Code 15
+  '427630', // Code 16
+  '542417', // Code 17
+  '562083', // Code 18
+  '571896', // Code 19
+  '612047', // Code 20
+  '671858', // Code 21
+  '719176', // Code 22
+  '748293', // Code 23
+  '770487', // Code 24
+  '809570', // Code 25
+  '837419', // Code 26
+  '872246', // Code 27
+  '876646', // Code 28
+  '877572', // Code 29
+  '983514', // Code 30
+];
+const CODE_LENGTH = 6;
+let gateInput = '';
+
+function gateTap(key) {
+  if (key === 'del') {
+    gateInput = gateInput.slice(0, -1);
+  } else if (gateInput.length < CODE_LENGTH) {
+    gateInput += key;
+  }
+  updateGateDots();
+  clearGateError();
+  if (gateInput.length === CODE_LENGTH) {
+    setTimeout(gateSubmit, 120); // auto-submit when full
+  }
+}
+
+function updateGateDots() {
+  const dots = document.querySelectorAll('.gate-dot');
+  dots.forEach((d, i) => {
+    d.classList.remove('filled', 'error');
+    if (i < gateInput.length) d.classList.add('filled');
+  });
+}
+
+function clearGateError() {
+  const err = document.getElementById('gate-error');
+  if (err) { err.style.opacity = '0'; err.textContent = ''; }
+  document.querySelectorAll('.gate-dot').forEach(d => d.classList.remove('error'));
+}
+
+function showGateError(msg) {
+  const err = document.getElementById('gate-error');
+  if (err) { err.textContent = msg; err.style.opacity = '1'; }
+  const dots = document.querySelectorAll('.gate-dot');
+  dots.forEach(d => { d.classList.remove('filled'); d.classList.add('error'); });
+  const dotsRow = document.getElementById('gate-dots');
+  if (dotsRow) {
+    dotsRow.classList.add('gate-shake');
+    setTimeout(() => dotsRow.classList.remove('gate-shake'), 500);
+  }
+  gateInput = '';
+  setTimeout(() => {
+    dots.forEach(d => d.classList.remove('error'));
+    clearGateError();
+  }, 1200);
+}
+
+function gateSubmit() {
+  if (gateInput.length < CODE_LENGTH) {
+    showGateError('Enter all 6 digits');
+    return;
+  }
+  if (VALID_CODES.includes(gateInput)) {
+    // Save unlock to localStorage so they don't need to re-enter
+    try { localStorage.setItem('cyfer_access', btoa(gateInput + '_unlocked')); } catch(e) {}
+    const gate = document.getElementById('gate');
+    gate.classList.add('gate-exit');
+    setTimeout(() => { gate.style.display = 'none'; }, 500);
+  } else {
+    showGateError('Invalid code — check your invite');
+  }
+}
+
+function checkGate() {
+  try {
+    const stored = localStorage.getItem('cyfer_access');
+    if (stored) {
+      const decoded = atob(stored);
+      const code = decoded.replace('_unlocked', '');
+      if (VALID_CODES.includes(code)) {
+        document.getElementById('gate').style.display = 'none';
+        return;
+      }
+    }
+  } catch(e) {}
+  // Gate stays visible — user must enter code
+}
+
+// Physical keyboard support for gate
+document.addEventListener('keydown', e => {
+  const gateVisible = document.getElementById('gate')?.style.display !== 'none';
+  if (gateVisible) {
+    if (e.key >= '0' && e.key <= '9') gateTap(e.key);
+    else if (e.key === 'Backspace') gateTap('del');
+    else if (e.key === 'Enter') gateSubmit();
+    return; // don't pass keys to app while gate is open
+  }
   if(e.key==='Enter'){
     const pr=document.getElementById('screen-practice').classList.contains('active');
     if(pr&&!session.answered) submitAnswer();
@@ -1647,6 +1846,7 @@ document.addEventListener('keydown',e=>{
 // ═══════════════════ INIT ═══════════════════
 loadState();
 updateHomeScreen();
+checkGate();
 </script>
 </body>
 </html>
