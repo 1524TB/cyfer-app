@@ -414,7 +414,7 @@ h2.sl{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:upperc
     <p class="tagline" style="margin-bottom:48px;">Train Your Thinking.</p>
     <div style="width:100%">
       <div class="card" onclick="showScreen('library')">
-        <div class="card-left"><div class="card-title">Practice Library</div><div class="card-sub">4 Sections · Levels 1–5</div></div>
+        <div class="card-left"><div class="card-title">Practice Library</div><div class="card-sub">5 Sections · Levels 1–5</div></div>
         <div class="arrow-btn"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
       <div class="card" onclick="showScreen('stats')">
@@ -484,11 +484,161 @@ h2.sl{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:upperc
       <div class="sec-desc">Grocery bills, restaurant tips, discounts, fuel, splitting bills — the mental math you actually use every day.</div>
     </div>
 
+    <!-- SECTION 5 -->
+    <h2 class="sl" style="margin-top:16px;">Section 5 — Case Math</h2>
+    <div class="sec-card" onclick="openCaseSection()" style="border:1px solid rgba(200,121,65,0.25);background:rgba(255,255,255,0.62);">
+      <div style="display:flex;align-items:center;">
+        <div class="sec-icon" style="background:rgba(200,121,65,0.15);color:#C87941;">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div>
+          <div class="sec-name">Structured Case Math</div>
+          <div class="sec-tag">Frame · Calculate · Interpret · 4 archetypes</div>
+        </div>
+        <div class="arrow-btn" style="margin-left:auto;flex-shrink:0;"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="sec-desc">MBB-style case math in context. Each question has three steps: frame the problem, calculate, then interpret the result as a consultant would. Directly trains the gap between knowing the math and knowing what it means.</div>
+    </div>
+
     <div style="height:24px;"></div>
   </div>
 </div>
 
-<!-- SECTION DETAIL (level picker) -->
+<!-- ═══════════ SECTION 5: CASE MATH MENU ═══════════ -->
+<div class="screen" id="screen-case-menu">
+  <div class="ph" style="padding-top:18px;">
+    <button class="back-btn" onclick="showScreen('library')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div style="flex:1;"><div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--bark);">Case Math</div><div class="ph-sub">Frame · Calculate · Interpret</div></div>
+  </div>
+  <div class="scroll" style="padding-top:4px;">
+    <p style="font-size:13px;color:var(--stone);line-height:1.65;margin-bottom:20px;font-weight:300;">Each question arrives as a real business situation. Frame the problem, calculate, then interpret the result as a consultant would.</p>
+    <h2 class="sl">Choose an archetype</h2>
+    <div class="sec-card" onclick="startCaseSession('profitability')" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;">
+        <div class="sec-icon" style="background:rgba(200,121,65,0.12);color:#C87941;"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div style="flex:1;"><div class="sec-name">Profitability</div><div class="sec-tag">Revenue · Costs · Margins · Most common first case</div></div>
+        <div id="cm-acc-profitability" style="font-size:13px;font-family:'Playfair Display',serif;color:var(--stone);margin-left:8px;flex-shrink:0;">—</div>
+      </div>
+    </div>
+    <div class="sec-card" onclick="startCaseSession('market')" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;">
+        <div class="sec-icon" style="background:rgba(74,122,138,0.12);color:#4A7A8A;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div style="flex:1;"><div class="sec-name">Market Entry &amp; Sizing</div><div class="sec-tag">TAM · Segmentation · Penetration · Share</div></div>
+        <div id="cm-acc-market" style="font-size:13px;font-family:'Playfair Display',serif;color:var(--stone);margin-left:8px;flex-shrink:0;">—</div>
+      </div>
+    </div>
+    <div class="sec-card" onclick="startCaseSession('investment')" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;">
+        <div class="sec-icon" style="background:rgba(92,90,46,0.12);color:#5C5A2E;"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        <div style="flex:1;"><div class="sec-name">Investment &amp; Growth</div><div class="sec-tag">M&amp;A · Payback · CAGR · Synergies</div></div>
+        <div id="cm-acc-investment" style="font-size:13px;font-family:'Playfair Display',serif;color:var(--stone);margin-left:8px;flex-shrink:0;">—</div>
+      </div>
+    </div>
+    <div class="sec-card" onclick="startCaseSession('operations')" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;">
+        <div class="sec-icon" style="background:rgba(61,46,42,0.1);color:#3D2E2A;"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div style="flex:1;"><div class="sec-name">Operations &amp; Cost</div><div class="sec-tag">Capacity · Efficiency · Cost reduction · Make vs buy</div></div>
+        <div id="cm-acc-operations" style="font-size:13px;font-family:'Playfair Display',serif;color:var(--stone);margin-left:8px;flex-shrink:0;">—</div>
+      </div>
+    </div>
+    <div class="sec-card" onclick="startCaseSession('mixed')" style="background:rgba(255,255,255,0.35);border:1px solid rgba(200,121,65,0.2);">
+      <div style="display:flex;align-items:center;">
+        <div class="sec-icon" style="background:rgba(200,121,65,0.1);color:#C87941;"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></div>
+        <div style="flex:1;"><div class="sec-name">Mixed — Exam Mode</div><div class="sec-tag">Random archetype · Full case pressure</div></div>
+        <div id="cm-acc-mixed" style="font-size:13px;font-family:'Playfair Display',serif;color:var(--stone);margin-left:8px;flex-shrink:0;">—</div>
+      </div>
+    </div>
+    <div style="height:24px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 5: CASE QUESTION (3-step) ═══════════ -->
+<div class="screen" id="screen-case-q">
+  <div class="ph">
+    <button class="back-btn" onclick="exitCaseSession()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div style="flex:1;"><div class="ph-title" id="cq-topic">Profitability</div><div class="ph-sub" id="cq-count">Question 1 of 6</div></div>
+    <div id="cq-step-tag" style="font-size:10px;font-weight:600;letter-spacing:.08em;padding:4px 10px;border-radius:20px;background:rgba(200,121,65,0.15);color:#C87941;">STEP 1</div>
+  </div>
+  <div class="q-dots" id="cq-dots"></div>
+
+  <!-- STEP 1: FRAME -->
+  <div id="cq-step1" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
+    <div style="flex:1;overflow-y:auto;padding:10px 20px 0;">
+      <div id="cq-badge" style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.7);font-size:11px;font-weight:500;color:var(--stone);margin-bottom:10px;"></div>
+      <div id="cq-scenario" style="font-size:13px;color:var(--bark);line-height:1.7;font-weight:300;margin-bottom:12px;"></div>
+      <div id="cq-question" style="font-family:'Playfair Display',serif;font-size:19px;color:var(--bark);line-height:1.3;margin-bottom:16px;"></div>
+      <p style="font-size:10px;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:10px;">Frame the problem first:</p>
+      <div id="cq-frames" style="display:flex;flex-direction:column;gap:8px;padding-bottom:16px;"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: CALCULATE -->
+  <div id="cq-step2" style="flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0;">
+    <div style="overflow-y:auto;padding:10px 20px 8px;flex:1;">
+      <div id="cq-calc-context-toggle" style="font-size:11px;color:var(--sky);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;margin-bottom:8px;display:none;" onclick="revealCqContext()">Show working</div>
+      <div id="cq-calc-context" style="font-size:12px;color:var(--stone);background:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.7);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:10px;line-height:1.6;font-weight:300;display:none;"></div>
+      <div id="cq-calc-q" style="font-family:'Playfair Display',serif;font-size:19px;color:var(--bark);line-height:1.3;margin-bottom:8px;"></div>
+      <div id="cq-calc-hint-toggle" style="font-size:12px;color:var(--sky);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;display:none;" onclick="revealCqHint()">Show hint</div>
+      <div id="cq-calc-hint" style="font-size:12px;color:var(--stone);margin-bottom:4px;font-style:italic;display:none;"></div>
+    </div>
+    <div class="kbd-display" id="cq-kbd-display"><span style="color:var(--dust);font-family:'Inter',sans-serif;font-size:16px;font-weight:300;">your answer</span></div>
+    <div class="kbd">
+      <button class="kbd-key" onclick="cqKbdTap('7')">7</button><button class="kbd-key" onclick="cqKbdTap('8')">8</button><button class="kbd-key" onclick="cqKbdTap('9')">9</button>
+      <button class="kbd-key" onclick="cqKbdTap('4')">4</button><button class="kbd-key" onclick="cqKbdTap('5')">5</button><button class="kbd-key" onclick="cqKbdTap('6')">6</button>
+      <button class="kbd-key" onclick="cqKbdTap('1')">1</button><button class="kbd-key" onclick="cqKbdTap('2')">2</button><button class="kbd-key" onclick="cqKbdTap('3')">3</button>
+      <button class="kbd-key kbd-action" onclick="cqKbdTap('.')">·</button><button class="kbd-key" onclick="cqKbdTap('0')">0</button><button class="kbd-key kbd-action" onclick="cqKbdTap('del')">⌫</button>
+    </div>
+    <div style="padding:0 18px 14px;flex-shrink:0;"><button class="kbd-key kbd-submit" style="width:100%;height:48px;border-radius:var(--r);" onclick="cqSubmitCalc()">Next</button></div>
+  </div>
+
+  <!-- STEP 3: INTERPRET -->
+  <div id="cq-step3" style="flex:1;display:none;flex-direction:column;overflow:hidden;min-height:0;">
+    <div style="flex:1;overflow-y:auto;padding:10px 20px;">
+      <div id="cq-result-box" style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);border-radius:var(--r-sm);padding:12px 16px;margin-bottom:14px;text-align:center;">
+        <div style="font-size:10px;color:var(--stone);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">Your answer</div>
+        <div id="cq-result-num" style="font-family:'Playfair Display',serif;font-size:26px;color:var(--bark);"></div>
+      </div>
+      <p style="font-size:10px;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:10px;">What does this tell the client?</p>
+      <div id="cq-insights" style="display:flex;flex-direction:column;gap:8px;padding-bottom:16px;"></div>
+    </div>
+  </div>
+
+  <!-- Feedback overlay -->
+  <div id="cq-feedback" style="display:none;position:absolute;bottom:74px;left:0;right:0;padding:12px 18px;z-index:10;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);">
+    <div id="cq-feedback-inner" style="border-radius:var(--r-sm);padding:13px 15px;border:1px solid;">
+      <div id="cq-feedback-title" style="font-size:13px;font-weight:500;margin-bottom:3px;"></div>
+      <div id="cq-feedback-body" style="font-size:12px;color:var(--stone);line-height:1.6;"></div>
+      <button onclick="cqNext()" style="width:100%;margin-top:10px;padding:10px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);border-radius:var(--r-sm);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--bark);cursor:pointer;">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION 5: CASE RESULT ═══════════ -->
+<div class="screen" id="screen-case-result">
+  <div class="scroll" style="padding-top:0;">
+    <div style="text-align:center;padding:28px 22px 16px;">
+      <div class="score-circle"><div class="score-pct" id="cr-pct">—</div><div class="score-lbl">SCORE</div></div>
+      <h1 class="display" id="cr-title" style="font-size:26px;">Well done.</h1>
+      <p style="font-size:13px;color:var(--stone);margin-top:6px;" id="cr-sub"></p>
+    </div>
+    <div style="padding:0 22px;">
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-num" id="cr-frame">—</div><div class="stat-lbl">Framing</div></div>
+        <div class="stat-box"><div class="stat-num" id="cr-calc">—</div><div class="stat-lbl">Calculation</div></div>
+        <div class="stat-box"><div class="stat-num" id="cr-insight">—</div><div class="stat-lbl">Insight</div></div>
+      </div>
+      <h2 class="sl" style="margin-top:4px;">Question review</h2>
+      <div id="cr-review"></div>
+      <div style="margin-top:16px;">
+        <button class="btn-p" onclick="startCaseSession(currentCaseArchetype)">Practice again</button>
+        <button class="btn-s" onclick="showScreen('case-menu')">Try another archetype <span class="ar"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+        <button class="btn-s" onclick="showScreen('home')">Home <span class="ar"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span></button>
+      </div>
+    </div>
+    <div style="height:30px;"></div>
+  </div>
+</div>
+
 <div class="screen" id="screen-section">
   <div class="ph">
     <button class="back-btn" onclick="showScreen('library')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -1133,7 +1283,7 @@ function showScreen(name){
     const btn=document.getElementById('nav-'+id);
     if(btn) btn.classList.remove('active');
   });
-  const navMap={home:'home',library:'library',section:'library',stats:'stats',profile:'profile',result:'home'};
+  const navMap={home:'home',library:'library',section:'library','case-menu':'library','case-q':'library','case-result':'library',stats:'stats',profile:'profile',result:'home'};
   const target=navMap[name];
   if(target){
     const btn=document.getElementById('nav-'+target);
@@ -1709,7 +1859,836 @@ function resetData(){
   }
 }
 
-// ═══════════════════ ACCESS GATE ═══════════════════
+// ═══════════════════════════════════════════════════════════════
+// SECTION 5 — CASE MATH ENGINE
+// ═══════════════════════════════════════════════════════════════
+let currentCaseArchetype = 'profitability';
+let caseSession = { questions:[], current:0, frameScores:[], calcScores:[], insightScores:[], step:1, calcValue:'' };
+
+// ── QUESTION GENERATOR ──────────────────────────────────────────
+function genCaseQ(archetype) {
+  const src = archetype==='mixed' ? pick(['profitability','market','investment','operations']) : archetype;
+  if(src==='profitability') return genProfitability();
+  if(src==='market')        return genMarket();
+  if(src==='investment')    return genInvestment();
+  return genOperations();
+}
+
+function genProfitability() {
+  const industries = [
+    {name:'European Airline',    unit:'per passenger', rev_u:[120,150,180,200,220], vc_u:[90,110,130,150,160], vol_k:[800,1200,1500,2000,2500], fc_m:[80,100,120,150,180]},
+    {name:'UK Grocery Retailer', unit:'per £M revenue', rev_m:[800,1000,1200,1500,2000], cogs_pct:[60,62,65,68,70], opex_m:[80,100,120,150,180]},
+    {name:'German Auto OEM',     unit:'per vehicle',   rev_u:[30000,35000,40000,45000,50000], vc_u:[22000,25000,28000,32000,36000], vol_k:[200,300,400,500,600], fc_m:[1000,1200,1500,2000,2500]},
+    {name:'SaaS Platform',       unit:'per customer',  rev_u:[800,1000,1200,1500,2000], vc_u:[100,150,200,250,300], vol_k:[20,30,40,50,80], fc_m:[10,15,20,25,30]},
+    {name:'Private Hospital',    unit:'per procedure', rev_u:[2000,2500,3000,3500,4000], vc_u:[800,1000,1200,1500,1800], vol_k:[50,80,100,120,150], fc_m:[20,30,40,50,60]},
+    {name:'Luxury Hotel Group',  unit:'per room-night',rev_u:[300,350,400,450,500], vc_u:[80,100,120,140,160], vol_k:[200,300,400,500,600], fc_m:[20,30,40,50,60]},
+  ];
+  const types = ['margin_drop','cost_split','breakeven_rev','contribution','ebit'];
+  const ind = pick(industries);
+  const type = pick(types);
+
+  if(type==='margin_drop') {
+    const rev = pick([500,800,1000,1200,1500,2000]);
+    const old_margin = pick([10,12,14,15,18,20]);
+    const new_margin = old_margin - pick([3,4,5,6,7,8]);
+    const old_profit = Math.round(rev*old_margin/100);
+    const new_profit = Math.round(rev*new_margin/100);
+    const drop = old_profit - new_profit;
+    return {
+      archetype:'profitability',
+      industry: ind.name,
+      scenario: `Your client is ${ind.name}. Two years ago operating margin was ${old_margin}%. Today it has fallen to ${new_margin}%. Revenue has remained flat at £${fmt(rev)}M.`,
+      question: `How much has operating profit fallen in absolute terms (£M)?`,
+      frames: [
+        {text:'Revenue has declined, pulling profit down', correct:false},
+        {text:'Margin compression on flat revenue means cost growth', correct:true},
+        {text:'Volume has fallen, reducing contribution', correct:false},
+        {text:'Fixed costs have increased faster than revenue growth', correct:false},
+      ],
+      frame_explanation: `Correct. Revenue is flat, so the entire profit decline is driven by margin compression — meaning costs have grown. The structure is: Δ Profit = Δ Margin × Revenue.`,
+      calc_context: `Old margin: ${old_margin}% on £${fmt(rev)}M = £${fmt(old_profit)}M. New margin: ${new_margin}% on £${fmt(rev)}M = £${fmt(new_profit)}M.`,
+      calc_question: `Absolute profit decline (£M)?`,
+      calc_hint: `Old profit − New profit`,
+      answer: drop, tolerance: drop*0.02,
+      insights: [
+        {text:`Costs have risen by £${fmt(drop)}M — decompose into fixed and variable before drawing conclusions`, correct:true},
+        {text:`The margin decline is within normal cyclical range — monitor for another quarter`, correct:false},
+        {text:`Revenue growth of ${Math.round(drop/new_profit*100)}% would restore the old profit level`, correct:false},
+        {text:`Both cost reduction and revenue acceleration should be explored in parallel`, correct:false},
+      ],
+      insight_explanation: `Right. £${fmt(drop)}M cost growth on flat revenue. The first move is decomposing cost — fixed vs variable, by category — before recommending any action.`,
+    };
+  }
+
+  if(type==='contribution') {
+    const price = pick([50,80,100,120,150,200]);
+    const vc_pct = pick([35,40,45,50,55,60]);
+    const vc = Math.round(price*vc_pct/100);
+    const cm = price-vc;
+    const cm_pct = Math.round(cm/price*100);
+    const vol = pick([50,80,100,120,150,200])*1000;
+    const total_cm = Math.round(cm*vol/1000000*10)/10;
+    return {
+      archetype:'profitability', industry:ind.name,
+      scenario:`Your client is ${ind.name}. Their core product sells at £${price} per unit. Variable cost per unit is £${vc}. Annual volume is ${fmt(vol)} units.`,
+      question:`What is total annual contribution margin (£M)?`,
+      frames:[
+        {text:'Revenue minus all costs including fixed', correct:false},
+        {text:'Price minus variable cost, multiplied by volume', correct:true},
+        {text:'Operating profit before interest and tax', correct:false},
+        {text:'Gross profit after deducting COGS only', correct:false},
+      ],
+      frame_explanation:`Correct. Contribution margin = (Price − Variable Cost) × Volume. Fixed costs are not deducted here — that gives you profit, not contribution.`,
+      calc_context:`CM per unit = £${price} − £${vc} = £${cm}. Volume = ${fmt(vol)} units.`,
+      calc_question:`Total contribution margin (£M)?`,
+      calc_hint:`£${cm} × ${fmt(vol)} ÷ 1,000,000`,
+      answer:total_cm, tolerance:total_cm*0.02,
+      insights:[
+        {text:`£${total_cm}M contribution must cover fixed costs to reach profitability`, correct:true},
+        {text:'The business is loss-making and needs to raise prices', correct:false},
+        {text:`CM margin of ${cm_pct}% is below industry average — exit recommended`, correct:false},
+        {text:'Variable costs are the key risk factor at current volume', correct:false},
+      ],
+      insight_explanation:`Right. £${total_cm}M contribution goes toward fixed costs and profit. In the case, you'd next ask for fixed costs to determine profitability and break-even.`,
+    };
+  }
+
+  if(type==='cost_split') {
+    const rev = pick([200,300,400,500,600,800,1000]);
+    const gm_pct = pick([35,40,45,50,55]);
+    const opex_pct = pick([15,18,20,22,25]);
+    const gp = Math.round(rev*gm_pct/100);
+    const opex = Math.round(rev*opex_pct/100);
+    const ebit = gp-opex;
+    const ebit_pct = Math.round(ebit/rev*100);
+    return {
+      archetype:'profitability', industry:ind.name,
+      scenario:`Your client is ${ind.name} with revenue of £${fmt(rev)}M. Gross margin is ${gm_pct}%. Operating expenses (SG&A) are ${opex_pct}% of revenue.`,
+      question:`What is EBIT and EBIT margin?`,
+      frames:[
+        {text:'EBIT = Revenue × (GM% − OpEx%) — a margin-stacking problem', correct:true},
+        {text:'EBIT = Revenue − COGS only', correct:false},
+        {text:'EBIT = Gross Profit + Operating Expenses', correct:false},
+        {text:'Need tax rate to calculate EBIT', correct:false},
+      ],
+      frame_explanation:`Correct. Work down the P&L: Gross Profit = ${gm_pct}% × Revenue. Then deduct OpEx = ${opex_pct}% × Revenue. EBIT margin = ${gm_pct}% − ${opex_pct}% = ${gm_pct-opex_pct}%.`,
+      calc_context:`GP = ${gm_pct}% × £${fmt(rev)}M = £${fmt(gp)}M. OpEx = ${opex_pct}% × £${fmt(rev)}M = £${fmt(opex)}M.`,
+      calc_question:`EBIT (£M)?`,
+      calc_hint:`GP − OpEx = ${fmt(gp)} − ${fmt(opex)}`,
+      answer:ebit, tolerance:ebit*0.02,
+      insights:[
+        {text:`${ebit_pct}% EBIT margin — benchmark against sector peers before drawing conclusions`, correct:true},
+        {text:'EBIT is too low — the business should be shut down', correct:false},
+        {text:'Revenue growth will automatically improve EBIT margin', correct:false},
+        {text:'The gross margin is the key problem to fix', correct:false},
+      ],
+      insight_explanation:`Right. ${ebit_pct}% EBIT margin needs context — healthy for grocery (low), concerning for SaaS (high-margin business). Always benchmark before concluding.`,
+    };
+  }
+
+  if(type==='breakeven_rev') {
+    const fc = pick([20,30,40,50,60,80,100]);
+    const cm_pct = pick([20,25,30,35,40]);
+    const be_rev = Math.round(fc/cm_pct*100);
+    return {
+      archetype:'profitability', industry:ind.name,
+      scenario:`Your client is ${ind.name}. Fixed costs are £${fc}M per year. Contribution margin is ${cm_pct}% of revenue. The business is currently loss-making.`,
+      question:`What revenue is needed to break even (£M)?`,
+      frames:[
+        {text:'Break-even revenue = Fixed Costs ÷ Contribution Margin %', correct:true},
+        {text:'Break-even revenue = Fixed Costs × Contribution Margin %', correct:false},
+        {text:'Break-even revenue = Fixed Costs + Variable Costs', correct:false},
+        {text:'Need to know pricing to calculate break-even revenue', correct:false},
+      ],
+      frame_explanation:`Correct. BE Revenue = Fixed Costs ÷ CM%. At this revenue level, contribution exactly covers fixed costs: no profit, no loss.`,
+      calc_context:`Fixed costs: £${fc}M. Contribution margin: ${cm_pct}%. Every £1 of revenue generates £${cm_pct/100} of contribution.`,
+      calc_question:`Break-even revenue (£M)?`,
+      calc_hint:`£${fc}M ÷ ${cm_pct}% = £${fc}M ÷ ${cm_pct/100}`,
+      answer:be_rev, tolerance:be_rev*0.02,
+      insights:[
+        {text:`The client needs £${fmt(be_rev)}M revenue — compare to current run rate to size the gap`, correct:true},
+        {text:'The business will never be profitable at these cost levels', correct:false},
+        {text:'Reducing fixed costs is always preferable to growing revenue', correct:false},
+        {text:`${cm_pct}% contribution margin is too low — raise prices immediately`, correct:false},
+      ],
+      insight_explanation:`Right. £${fmt(be_rev)}M is the target. In the case, you'd compare this to current revenue to quantify how far they need to go, then explore levers: volume, pricing, cost.`,
+    };
+  }
+
+  // ebit with growth
+  const rev = pick([300,400,500,600,800,1000]);
+  const ebit_pct = pick([8,10,12,14,15,18]);
+  const growth = pick([5,8,10,12,15]);
+  const new_rev = Math.round(rev*(1+growth/100));
+  const new_ebit = Math.round(new_rev*ebit_pct/100);
+  return {
+    archetype:'profitability', industry:ind.name,
+    scenario:`Your client is ${ind.name} with current revenue of £${fmt(rev)}M and EBIT margin of ${ebit_pct}%. Revenue is expected to grow ${growth}% next year. Margin is assumed constant.`,
+    question:`What is next year's EBIT (£M)?`,
+    frames:[
+      {text:'Revenue growth × current EBIT margin — a two-step calculation', correct:true},
+      {text:'This year EBIT + growth rate applied to profit', correct:false},
+      {text:'Need to know cost breakdown before projecting EBIT', correct:false},
+      {text:'EBIT margin will compress as revenue grows', correct:false},
+    ],
+    frame_explanation:`Correct. If margin is constant, simply grow revenue first, then apply margin. New Revenue = ${fmt(rev)} × ${1+growth/100}. New EBIT = New Revenue × ${ebit_pct}%.`,
+    calc_context:`New Revenue = £${fmt(rev)}M × ${1+growth/100} = £${fmt(new_rev)}M. Apply ${ebit_pct}% EBIT margin.`,
+    calc_question:`Next year's EBIT (£M)?`,
+    calc_hint:`£${fmt(new_rev)}M × ${ebit_pct}%`,
+    answer:new_ebit, tolerance:new_ebit*0.02,
+    insights:[
+      {text:`EBIT grows from £${Math.round(rev*ebit_pct/100)}M to £${new_ebit}M — but margin assumption should be tested`, correct:true},
+      {text:'Revenue growth automatically improves EBIT margin', correct:false},
+      {text:`${growth}% growth is too low — the client should target higher`, correct:false},
+      {text:'EBIT projection is unreliable without knowing fixed vs variable cost split', correct:false},
+    ],
+    insight_explanation:`Right. £${new_ebit}M projected EBIT — but always flag the assumption. In real cases, margins often compress during growth due to investment spend.`,
+  };
+}
+
+function genMarket() {
+  const contexts = [
+    {market:'UK electric vehicle market', pop:28, pct_buyer:[10,15,20], spend:[30,35,40,45,50]},
+    {market:'European corporate wellness apps', pop:50, pct_buyer:[5,8,10,12,15], spend:[15,20,25,30]},
+    {market:'US premium coffee market', pop:130, pct_buyer:[20,25,30,35,40], spend:[1,1.2,1.5,1.8,2]},
+    {market:'German private healthcare market', pop:20, pct_buyer:[15,20,25,30], spend:[2,2.5,3,3.5,4]},
+    {market:'Indian EdTech market', pop:200, pct_buyer:[5,8,10,15], spend:[0.3,0.4,0.5,0.6,0.8]},
+    {market:'Southeast Asian food delivery market', pop:80, pct_buyer:[15,20,25,30,35], spend:[0.5,0.8,1,1.2,1.5]},
+  ];
+  const types = ['tam','market_share_back','share_gain','penetration'];
+  const ctx = pick(contexts);
+  const type = pick(types);
+
+  if(type==='tam') {
+    const pct = pick(ctx.pct_buyer);
+    const sp = pick(ctx.spend);
+    const buyers = Math.round(ctx.pop*pct/100*10)/10;
+    const tam = Math.round(buyers*sp*10)/10;
+    return {
+      archetype:'market', industry:'Market Sizing',
+      scenario:`Your client is considering entering the ${ctx.market}. Addressable population: ${ctx.pop}M people. ${pct}% are potential buyers. Average annual spend per buyer: $${sp}K.`,
+      question:`What is the total addressable market (TAM) in $B?`,
+      frames:[
+        {text:'TAM = Population × Penetration % × Average spend', correct:true},
+        {text:'TAM = Total population × average spend', correct:false},
+        {text:'Need competitor data before estimating market size', correct:false},
+        {text:'TAM = Number of buyers × market growth rate', correct:false},
+      ],
+      frame_explanation:`Correct. The classic TAM formula: Population × Penetration × Spend. Always segment before multiplying — total population overstates the market.`,
+      calc_context:`Buyers: ${ctx.pop}M × ${pct}% = ${buyers}M. Annual spend per buyer: $${sp}K.`,
+      calc_question:`TAM ($B)?`,
+      calc_hint:`${buyers}M buyers × $${sp}K = $${tam}B`,
+      answer:tam, tolerance:tam*0.05,
+      insights:[
+        {text:`$${tam}B TAM — now estimate realistic market share capture to size the opportunity`, correct:true},
+        {text:'TAM is too small — the client should not enter this market', correct:false},
+        {text:'Penetration rate is the most uncertain assumption — test it first', correct:false},
+        {text:`The client needs 50% market share to make this worthwhile`, correct:false},
+      ],
+      insight_explanation:`Right. $${tam}B is the ceiling. A realistic entry share of 2–5% would represent $${Math.round(tam*0.03*10)/10}–$${Math.round(tam*0.05*10)/10}B revenue — is that material for your client?`,
+    };
+  }
+
+  if(type==='market_share_back') {
+    const revenue = pick([20,30,50,80,100,150,200]);
+    const share = pick([2,3,4,5,8,10]);
+    const total = Math.round(revenue/share*100);
+    return {
+      archetype:'market', industry:'Market Sizing',
+      scenario:`Your client generates $${revenue}M revenue in the ${ctx.market}. Their market share is ${share}%.`,
+      question:`What is the total market size ($M)?`,
+      frames:[
+        {text:'Market size = Revenue ÷ Market share %', correct:true},
+        {text:'Market size = Revenue × Market share %', correct:false},
+        {text:'Market size = Revenue × (1 + growth rate)', correct:false},
+        {text:'Need to know number of competitors to calculate total market', correct:false},
+      ],
+      frame_explanation:`Correct. If you know revenue and share, back-calculate: Total Market = Revenue ÷ Share%. This is often faster than building up from population.`,
+      calc_context:`$${revenue}M is ${share}% of total market. Total = ${revenue} ÷ ${share/100}.`,
+      calc_question:`Total market size ($M)?`,
+      calc_hint:`$${revenue}M ÷ ${share}% = $${revenue}M ÷ ${share/100}`,
+      answer:total, tolerance:total*0.02,
+      insights:[
+        {text:`$${fmt(total)}M market — if client doubles share to ${share*2}%, revenue doubles to $${revenue*2}M`, correct:true},
+        {text:'Market size is too large — share gain will be difficult', correct:false},
+        {text:`${share}% share is already market-leading — further growth is limited`, correct:false},
+        {text:'Market size is irrelevant — focus on profitability instead', correct:false},
+      ],
+      insight_explanation:`Right. $${fmt(total)}M total market. The key question now: is growth coming from share gain, market expansion, or both? Each has different strategic implications.`,
+    };
+  }
+
+  const cur_rev = pick([50,80,100,150,200]);
+  const target_share = pick([5,8,10,12,15]);
+  const market_size = pick([500,800,1000,1500,2000]);
+  const target_rev = Math.round(market_size*target_share/100);
+  const gap = target_rev-cur_rev;
+  return {
+    archetype:'market', industry:'Market Entry',
+    scenario:`Your client currently earns $${cur_rev}M in the ${ctx.market}. Total market is $${fmt(market_size)}M. The CEO wants to reach ${target_share}% market share in 3 years.`,
+    question:`What additional revenue ($M) must the client capture?`,
+    frames:[
+      {text:'Target revenue − current revenue = revenue gap to fill', correct:true},
+      {text:'Market size × growth rate gives the opportunity', correct:false},
+      {text:'Current share must be calculated before finding the gap', correct:false},
+      {text:'The question requires knowing the number of competitors', correct:false},
+    ],
+    frame_explanation:`Correct. Target Revenue = ${target_share}% × $${fmt(market_size)}M. Gap = Target − Current. Clean two-step calculation.`,
+    calc_context:`Target: ${target_share}% × $${fmt(market_size)}M = $${fmt(target_rev)}M. Current: $${cur_rev}M.`,
+    calc_question:`Revenue gap to fill ($M)?`,
+    calc_hint:`$${fmt(target_rev)}M − $${cur_rev}M`,
+    answer:gap, tolerance:gap*0.02,
+    insights:[
+      {text:`$${fmt(gap)}M gap over 3 years — that's $${Math.round(gap/3)}M per year of new revenue needed`, correct:true},
+      {text:'The target is unrealistic and should be revised downward', correct:false},
+      {text:'Organic growth alone can fill this gap given market trends', correct:false},
+      {text:`${target_share}% market share is below industry leader levels — target higher`, correct:false},
+    ],
+    insight_explanation:`Right. $${Math.round(gap/3)}M per year. Now explore how: organic growth, acquisition, new segments, new geographies. Each lever has a different cost and timeline.`,
+  };
+}
+
+function genInvestment() {
+  const types = ['payback','synergy','cagr_target','roi','make_buy'];
+  const type = pick(types);
+
+  if(type==='payback') {
+    const inv = pick([50,80,100,120,150,200,250,500]);
+    const ann_cf = pick([10,15,20,25,30,40,50]);
+    const pb = Math.round(inv/ann_cf*10)/10;
+    const industries = ['European logistics network','digital platform','manufacturing facility','retail expansion','healthcare technology'];
+    const ind = pick(industries);
+    return {
+      archetype:'investment', industry:'Investment',
+      scenario:`Your client is considering a £${inv}M investment in a new ${ind}. Expected annual incremental cash flow: £${ann_cf}M. No significant residual value.`,
+      question:`Simple payback period (years)?`,
+      frames:[
+        {text:'Payback = Investment ÷ Annual cash flow — no discounting', correct:true},
+        {text:'Payback requires NPV calculation at a discount rate', correct:false},
+        {text:'Payback = Investment × (1 + risk premium)', correct:false},
+        {text:'Need year-by-year cash flows before calculating payback', correct:false},
+      ],
+      frame_explanation:`Correct. Simple payback ignores the time value of money — it asks "when do cumulative cash flows equal the investment?" Payback = Investment ÷ Annual CF.`,
+      calc_context:`Investment: £${inv}M. Annual cash flow: £${ann_cf}M.`,
+      calc_question:`Payback period (years)?`,
+      calc_hint:`£${inv}M ÷ £${ann_cf}M`,
+      answer:pb, tolerance:0.2,
+      insights:[
+        {text:`${pb} years — now layer in NPV at the client's cost of capital to confirm value creation`, correct:true},
+        {text:`${pb} years is within range — but the undiscounted nature of payback may overstate attractiveness`, correct:false},
+        {text:`Payback alone is sufficient to approve this investment at ${pb} years`, correct:false},
+        {text:`The primary risk is execution, not the financial return at ${pb} years payback`, correct:false},
+      ],
+      insight_explanation:`Right. ${pb} years payback. Payback is a useful filter but ignores cash flows after the payback period and the time value of money. A full DCF is the next step.`,
+    };
+  }
+
+  if(type==='synergy') {
+    const target_rev = pick([200,300,400,500,600,800,1000]);
+    const synergy_pct = pick([3,4,5,6,8,10]);
+    const synergy = Math.round(target_rev*synergy_pct/100);
+    const multiple = pick([8,9,10,11,12]);
+    const price = Math.round(target_rev*multiple/10)*10;
+    const types2 = ['cost','revenue'];
+    const syn_type = pick(types2);
+    return {
+      archetype:'investment', industry:'M&A',
+      scenario:`Your client is acquiring a ${pick(['consumer goods','logistics','healthcare','retail','tech'])} company for £${fmt(price)}M (${multiple}× revenue). Target revenue: £${fmt(target_rev)}M. Expected ${syn_type} synergies: ${synergy_pct}% of target revenue.`,
+      question:`Annual synergy value (£M)?`,
+      frames:[
+        {text:'Synergy value = Target revenue × synergy % — straightforward multiplication', correct:true},
+        {text:'Synergies = Acquisition price × synergy % — apply to deal size', correct:false},
+        {text:'Need combined entity revenue before calculating synergies', correct:false},
+        {text:'Revenue and cost synergies require different formulas', correct:false},
+      ],
+      frame_explanation:`Correct. ${syn_type==='cost'?'Cost':'Revenue'} synergies are quoted as % of target revenue. Simply: £${fmt(target_rev)}M × ${synergy_pct}% = £${fmt(synergy)}M.`,
+      calc_context:`Target revenue: £${fmt(target_rev)}M. Synergy rate: ${synergy_pct}%.`,
+      calc_question:`Annual synergy value (£M)?`,
+      calc_hint:`£${fmt(target_rev)}M × ${synergy_pct}%`,
+      answer:synergy, tolerance:synergy*0.02,
+      insights:[
+        {text:`£${fmt(synergy)}M synergies vs £${fmt(price)}M price — synergies alone justify ${Math.round(synergy/price*100)}% of the deal`, correct:true},
+        {text:'Synergies are too small to justify the acquisition price', correct:false},
+        {text:'${syn_type} synergies are more reliable than the other type', correct:false},
+        {text:'Synergy realisation risk is the most important factor', correct:false},
+      ],
+      insight_explanation:`Right. £${fmt(synergy)}M per year. Capitalised at a typical multiple, that's meaningful value — but realisation risk is real. Always haircut synergies by 30–50% in your initial case analysis.`,
+    };
+  }
+
+  if(type==='cagr_target') {
+    const current = pick([100,150,200,300,400,500]);
+    const target = pick([2,2.5,3,3.5,4])*current;
+    const years = pick([3,4,5]);
+    const cagr = Math.round((Math.pow(target/current,1/years)-1)*100);
+    return {
+      archetype:'investment', industry:'Growth',
+      scenario:`Your client has set an ambitious growth target: from £${fmt(current)}M revenue today to £${fmt(target)}M in ${years} years. The board wants to know the implied annual growth rate.`,
+      question:`Required CAGR to hit the target (approx %)?`,
+      frames:[
+        {text:'CAGR = (Target ÷ Current)^(1/years) − 1 — compound root', correct:true},
+        {text:'CAGR = (Target − Current) ÷ Current ÷ years — simple average', correct:false},
+        {text:'CAGR = Target growth ÷ base revenue', correct:false},
+        {text:'Need market growth rate to calculate required CAGR', correct:false},
+      ],
+      frame_explanation:`Correct. CAGR uses the ${years}th root of (Target/Current). Mental shortcut: ${target/current}× in ${years} years. Quick approximation: total % growth ÷ years × 0.75.`,
+      calc_context:`${target/current}× growth over ${years} years. ${years}th root of ${target/current} − 1. Approximation: ${Math.round((target/current-1)*100)}% total ÷ ${years} yrs ≈ ${Math.round((target/current-1)*100/years)}%, then scale down slightly for compounding.`,
+      calc_question:`Required CAGR (approximate %)?`,
+      calc_hint:`${target/current}× in ${years} years → CAGR ≈ ${cagr}%`,
+      answer:cagr, tolerance:3,
+      insights:[
+        {text:`${cagr}% CAGR implies significant share gain or M&A — organic levers alone likely insufficient`, correct:true},
+        {text:`${cagr}% is aggressive but achievable with the right portfolio of initiatives`, correct:false},
+        {text:`The board should validate whether ${cagr}% is realistic given market growth rates`, correct:false},
+        {text:`Focus on profitability improvement rather than chasing a ${cagr}% growth target`, correct:false},
+      ],
+      insight_explanation:`Right. ${cagr}% CAGR. If the market grows at ${Math.round(cagr/3)}%, the client needs significant share gain or M&A to close the gap. That shapes the entire strategy recommendation.`,
+    };
+  }
+
+  if(type==='roi') {
+    const inv = pick([100,150,200,250,300,500]);
+    const ret = Math.round(inv*pick([1.4,1.5,1.6,1.8,2,2.5])/10)*10;
+    const net = ret-inv;
+    const roi = Math.round(net/inv*100);
+    return {
+      archetype:'investment', industry:'Investment',
+      scenario:`Your client invested £${inv}M in a ${pick(['factory upgrade','digital transformation','market expansion','new product line','supply chain overhaul'])}. Total returns over the project life: £${fmt(ret)}M.`,
+      question:`ROI on this investment (%)?`,
+      frames:[
+        {text:'ROI = (Return − Investment) ÷ Investment × 100', correct:true},
+        {text:'ROI = Total Return ÷ Investment × 100', correct:false},
+        {text:'ROI = Net profit ÷ Revenue × 100', correct:false},
+        {text:'ROI requires IRR calculation over the investment period', correct:false},
+      ],
+      frame_explanation:`Correct. ROI = Net Gain ÷ Investment. Net gain = £${fmt(ret)}M − £${inv}M = £${fmt(net)}M. Divide by investment, multiply by 100.`,
+      calc_context:`Net gain: £${fmt(ret)}M − £${inv}M = £${fmt(net)}M. Investment: £${inv}M.`,
+      calc_question:`ROI (%)?`,
+      calc_hint:`£${fmt(net)}M ÷ £${inv}M × 100`,
+      answer:roi, tolerance:2,
+      insights:[
+        {text:`${roi}% ROI — assess against the client's cost of capital and alternative uses`, correct:true},
+        {text:'ROI above 0% means the investment was worthwhile', correct:false},
+        {text:`${roi}% ROI is exceptional — recommend scaling immediately`, correct:false},
+        {text:'ROI without timing is meaningless — need payback period too', correct:false},
+      ],
+      insight_explanation:`Right. ${roi}% ROI. But timing matters — ${roi}% over 2 years is very different from ${roi}% over 10 years. In a case, pair ROI with payback and NPV for a complete picture.`,
+    };
+  }
+
+  // make vs buy
+  const vol = pick([100,200,300,400,500])*1000;
+  const make_fc = pick([5,8,10,12,15,20]);
+  const make_vc = pick([20,25,30,35,40]);
+  const buy_price = pick([40,45,50,55,60,65,70]);
+  const make_total = make_fc*1e6 + make_vc*vol;
+  const buy_total = buy_price*vol;
+  const cheaper = make_total < buy_total ? 'Make' : 'Buy';
+  const diff = Math.abs(Math.round((buy_total-make_total)/1e6));
+  return {
+    archetype:'investment', industry:'Operations',
+    scenario:`Your client can manufacture a component in-house or outsource it. In-house: £${make_fc}M fixed costs + £${make_vc}/unit variable. Outsource: £${buy_price}/unit. Annual volume: ${fmt(vol)} units.`,
+    question:`Which is cheaper, and by how much (£M)?`,
+    frames:[
+      {text:'Compare total cost of each option at the given volume', correct:true},
+      {text:'Only compare variable costs — fixed costs are sunk', correct:false},
+      {text:'Make is always cheaper above a certain volume threshold', correct:false},
+      {text:'Need to know quality difference before comparing costs', correct:false},
+    ],
+    frame_explanation:`Correct. Compare total cost at ${fmt(vol)} units. Make: £${make_fc}M + (£${make_vc} × ${fmt(vol)}). Buy: £${buy_price} × ${fmt(vol)}. Then find the difference.`,
+    calc_context:`Make total: £${make_fc}M + £${make_vc} × ${fmt(vol)} = £${Math.round(make_total/1e6)}M. Buy total: £${buy_price} × ${fmt(vol)} = £${Math.round(buy_total/1e6)}M.`,
+    calc_question:`Cost difference (£M, enter as positive number)?`,
+    calc_hint:`|Make total − Buy total|`,
+    answer:diff, tolerance:Math.max(1,diff*0.03),
+    insights:[
+      {text:`${cheaper} is cheaper by £${diff}M — but also assess quality, flexibility and strategic risk`, correct:true},
+      {text:`Always outsource — fixed cost elimination improves balance sheet`, correct:false},
+      {text:`Always manufacture — vertical integration builds competitive advantage`, correct:false},
+      {text:`Cost difference of £${diff}M is immaterial — decide on strategy alone`, correct:false},
+    ],
+    insight_explanation:`Right. ${cheaper} is cheaper by £${diff}M at this volume. But in a case, cost is just one dimension. Outsourcing risks supply chain dependency; making requires capital allocation and management bandwidth.`,
+  };
+}
+
+function genOperations() {
+  const types = ['capacity','efficiency','cost_reduction','headcount'];
+  const type = pick(types);
+
+  if(type==='capacity') {
+    const facilities = ['factory','call centre','warehouse','hospital ward','distribution hub'];
+    const fac = pick(facilities);
+    const cap_per = pick([100,120,150,200,250]);
+    const n_fac = pick([3,4,5,6,8]);
+    const util = pick([70,75,80,85,90]);
+    const eff_cap = Math.round(cap_per*n_fac*util/100);
+    const demand = Math.round(eff_cap*pick([1.1,1.15,1.2,1.25,1.3])/5)*5;
+    const gap = demand-eff_cap;
+    return {
+      archetype:'operations', industry:'Operations',
+      scenario:`Your client operates ${n_fac} ${fac}s, each with a capacity of ${fmt(cap_per)} units/day. Current utilisation is ${util}%. Forecast demand next year: ${fmt(demand)} units/day.`,
+      question:`What is the capacity gap (units/day)?`,
+      frames:[
+        {text:'Effective capacity = n × unit capacity × utilisation. Gap = Demand − Effective capacity', correct:true},
+        {text:'Gap = Total theoretical capacity − Demand', correct:false},
+        {text:'Capacity gap requires knowing shift patterns and overtime', correct:false},
+        {text:'Utilisation rate is irrelevant — use nameplate capacity', correct:false},
+      ],
+      frame_explanation:`Correct. Effective capacity = ${n_fac} × ${cap_per} × ${util}% = ${eff_cap} units/day. Gap = ${fmt(demand)} − ${eff_cap} = ${gap} units/day.`,
+      calc_context:`Effective capacity: ${n_fac} × ${fmt(cap_per)} × ${util}% = ${fmt(eff_cap)} units/day.`,
+      calc_question:`Capacity gap (units/day)?`,
+      calc_hint:`${fmt(demand)} − ${fmt(eff_cap)}`,
+      answer:gap, tolerance:Math.max(1,gap*0.02),
+      insights:[
+        {text:`${fmt(gap)} unit/day gap — explore utilisation improvement before committing capital to new facilities`, correct:true},
+        {text:`The shortfall confirms a new facility is needed — begin site selection immediately`, correct:false},
+        {text:`Demand forecast uncertainty means the gap may close without intervention`, correct:false},
+        {text:`Both utilisation improvement and new capacity should be pursued simultaneously`, correct:false},
+      ],
+      insight_explanation:`Right. ${fmt(gap)} units/day shortfall. Before capital investment, ask: can utilisation go to 90–95%? That would add ${Math.round(cap_per*n_fac*0.15)} units/day without a single pound of capex.`,
+    };
+  }
+
+  if(type==='efficiency') {
+    const centres = pick([3,4,5,6]);
+    const calls = [600,400,300,200,350,450].slice(0,centres);
+    const costs = [500000,500000,200000,200000,180000,220000].slice(0,centres);
+    const total_calls = calls.reduce((a,b)=>a+b,0)*1000;
+    const total_cost = costs.reduce((a,b)=>a+b,0);
+    const avg_cost = Math.round(total_cost/total_calls*100)/100;
+    const best_cost = Math.round(Math.min(...costs.map((c,i)=>c/(calls[i]*1000)))*100)/100;
+    const saving = Math.round((avg_cost-best_cost)*total_calls/1000)/1000;
+    return {
+      archetype:'operations', industry:'Operations',
+      scenario:`Your client runs ${centres} operations centres. Centre A: ${calls[0]}K calls/yr, £${(costs[0]/1000).toFixed(0)}K cost. Centre B: ${calls[1]}K calls/yr, £${(costs[1]/1000).toFixed(0)}K cost. Centre C: ${calls[2]}K calls/yr, £${(costs[2]/1000).toFixed(0)}K cost.`,
+      question:`What is the average cost per call across all centres (£)?`,
+      frames:[
+        {text:'Total cost ÷ Total calls — weighted average across all centres', correct:true},
+        {text:'Average the per-call cost of each centre equally', correct:false},
+        {text:'Use the lowest-cost centre as the benchmark', correct:false},
+        {text:'Need headcount data to calculate cost per call', correct:false},
+      ],
+      frame_explanation:`Correct. Weighted average: sum all costs, divide by total calls. Simple average of centre rates would be wrong — centres have different volumes.`,
+      calc_context:`Total calls: ${fmt(total_calls)}. Total cost: £${fmt(total_cost)}.`,
+      calc_question:`Average cost per call (£)?`,
+      calc_hint:`£${fmt(total_cost)} ÷ ${fmt(total_calls)}`,
+      answer:avg_cost, tolerance:0.05,
+      insights:[
+        {text:`£${avg_cost} per call average — benchmark against best-in-class to size cost reduction opportunity`, correct:true},
+        {text:'Shut all high-cost centres and centralise operations', correct:false},
+        {text:'Cost per call is the wrong metric — focus on customer satisfaction', correct:false},
+        {text:`£${avg_cost} is within acceptable range — no action needed`, correct:false},
+      ],
+      insight_explanation:`Right. £${avg_cost} per call. If the best centre runs at £${best_cost}, applying that rate to all volume saves approximately £${saving}M annually — a significant opportunity.`,
+    };
+  }
+
+  if(type==='headcount') {
+    const staff = pick([100,150,200,250,300,400,500]);
+    const salary = pick([40,50,60,70,80,100]);
+    const burden = pick([25,28,30,32,35]);
+    const total_cost = Math.round(staff*salary*1000*(1+burden/100)/1e6*10)/10;
+    const target_saving = pick([10,15,20,25]);
+    const headcount_save = Math.round(total_cost*target_saving/100/(salary*1000*(1+burden/100))*1e6);
+    return {
+      archetype:'operations', industry:'Cost Reduction',
+      scenario:`Your client wants to reduce staff costs by ${target_saving}%. Current headcount: ${staff} FTEs. Average salary: £${salary}K. Employer burden (tax, benefits): ${burden}% on top of salary.`,
+      question:`How many FTEs need to be cut to hit the saving target?`,
+      frames:[
+        {text:'Total cost × saving % = target saving £. Divide by cost per FTE', correct:true},
+        {text:'Headcount × saving % = FTEs to cut', correct:false},
+        {text:'Only apply burden rate to the savings, not total cost', correct:false},
+        {text:'Need to know voluntary attrition before calculating reductions', correct:false},
+      ],
+      frame_explanation:`Correct. Total cost = ${staff} × £${salary}K × ${1+burden/100} = £${total_cost}M. Target saving = ${target_saving}% of that. FTE reduction = saving ÷ cost per FTE.`,
+      calc_context:`Total cost: ${staff} × £${salary}K × ${1+burden/100} = £${total_cost}M. Target: ${target_saving}% × £${total_cost}M = £${Math.round(total_cost*target_saving/100*10)/10}M.`,
+      calc_question:`FTEs to cut?`,
+      calc_hint:`£${Math.round(total_cost*target_saving/100*10)/10}M ÷ £${Math.round(salary*(1+burden/100)/10)*10}K per FTE`,
+      answer:headcount_save, tolerance:Math.max(2,headcount_save*0.05),
+      insights:[
+        {text:`${headcount_save} FTEs — explore natural attrition and redeployment before redundancy`, correct:true},
+        {text:'Staff cuts always destroy value — find savings elsewhere', correct:false},
+        {text:`${headcount_save} FTEs is too few — the target saving is too modest`, correct:false},
+        {text:'Implement cuts immediately to signal decisiveness to markets', correct:false},
+      ],
+      insight_explanation:`Right. ${headcount_save} FTEs. In a case, you'd explore: what's the annual attrition rate? If it's 10%, ${Math.round(staff*0.1)} people leave naturally each year — cuts can be achieved without forced redundancy.`,
+    };
+  }
+
+  // cost reduction — process
+  const cur_cost = pick([200,300,400,500,600,800,1000]);
+  const waste_pct = pick([8,10,12,15,18,20]);
+  const fix_pct = pick([50,60,70,80]);
+  const savings = Math.round(cur_cost*waste_pct/100*fix_pct/100);
+  return {
+    archetype:'operations', industry:'Cost Reduction',
+    scenario:`Your client's ${pick(['manufacturing','logistics','procurement','back-office'])} process costs £${fmt(cur_cost)}M annually. An analysis shows ${waste_pct}% of activities are non-value-adding. ${fix_pct}% of waste is practically eliminable.`,
+    question:`Achievable annual cost saving (£M)?`,
+    frames:[
+      {text:'Saving = Total cost × waste % × eliminable % — two-step reduction', correct:true},
+      {text:'Saving = Total cost × waste % — assume all waste can be removed', correct:false},
+      {text:'Saving = Total cost × (1 − waste %) — cost if fully efficient', correct:false},
+      {text:'Need activity-level data before calculating savings', correct:false},
+    ],
+    frame_explanation:`Correct. Two-step: total waste = ${waste_pct}% × cost. Achievable saving = ${fix_pct}% of that waste. Never assume 100% of waste is eliminable in practice.`,
+    calc_context:`Total waste: ${waste_pct}% × £${fmt(cur_cost)}M = £${Math.round(cur_cost*waste_pct/100)}M. Eliminable: ${fix_pct}% of that.`,
+    calc_question:`Achievable saving (£M)?`,
+    calc_hint:`£${Math.round(cur_cost*waste_pct/100)}M × ${fix_pct}%`,
+    answer:savings, tolerance:savings*0.03,
+    insights:[
+      {text:`£${savings}M saving — size this against implementation cost to confirm positive ROI`, correct:true},
+      {text:'Process improvement always has faster ROI than cost cutting', correct:false},
+      {text:`£${savings}M is not material — look for larger opportunities`, correct:false},
+      {text:'Implement all changes simultaneously for maximum impact', correct:false},
+    ],
+    insight_explanation:`Right. £${savings}M annual saving. Always net against implementation cost and time to value. A £${savings}M saving that costs £${savings*2}M to implement over 3 years may still be worth it — or may not.`,
+  };
+}
+
+// ── SESSION MANAGEMENT ──────────────────────────────────────────
+function openCaseSection() {
+  // Update accuracy displays
+  ['profitability','market','investment','operations','mixed'].forEach(a => {
+    const key = 'case_'+a;
+    const st = state.topicStats[key];
+    const el = document.getElementById('cm-acc-'+a);
+    if(el && st && st.answered>0) el.textContent = Math.round(st.correct/st.answered*100)+'%';
+  });
+  showScreen('case-menu');
+}
+
+function startCaseSession(archetype) {
+  currentCaseArchetype = archetype;
+  const n = 3;
+  const qs = [];
+  const seen = new Set();
+  let attempts = 0;
+  while(qs.length < n && attempts < n*6) {
+    attempts++;
+    try {
+      const q = genCaseQ(archetype);
+      const key = q.scenario.slice(0,30);
+      if(!seen.has(key)) { seen.add(key); qs.push(q); }
+    } catch(e) {}
+  }
+  caseSession = { questions:qs, current:0, frameScores:[], calcScores:[], insightScores:[], step:1, calcValue:'' };
+  showScreen('case-q');
+  renderCaseQ();
+}
+
+function renderCaseQ() {
+  const q = caseSession.questions[caseSession.current];
+  const total = caseSession.questions.length;
+  document.getElementById('cq-topic').textContent = {profitability:'Profitability',market:'Market Entry',investment:'Investment',operations:'Operations',mixed:'Mixed'}[currentCaseArchetype]||'Case Math';
+  document.getElementById('cq-count').textContent = `Question ${caseSession.current+1} of ${total}`;
+  renderCaseDots();
+  showCaseStep(1);
+}
+
+function renderCaseDots() {
+  const c = document.getElementById('cq-dots'); c.innerHTML='';
+  const total = caseSession.questions.length;
+  for(let i=0;i<total;i++) {
+    const d = document.createElement('div');
+    const fs = caseSession.frameScores[i]; const cs = caseSession.calcScores[i]; const is = caseSession.insightScores[i];
+    const done = fs!==undefined&&cs!==undefined&&is!==undefined;
+    const correct = done&&fs&&cs&&is;
+    d.style.cssText = `width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .3s;background:${i<caseSession.current?(correct?'var(--moss)':'#D4897A'):i===caseSession.current?'var(--bark)':'var(--fog)'}`;
+    c.appendChild(d);
+  }
+}
+
+let cqKbdVal = '';
+
+function showCaseStep(step) {
+  caseSession.step = step;
+  const q = caseSession.questions[caseSession.current];
+  document.getElementById('cq-step1').style.display = step===1?'flex':'none';
+  document.getElementById('cq-step2').style.display = step===2?'flex':'none';
+  document.getElementById('cq-step3').style.display = step===3?'flex':'none';
+  document.getElementById('cq-feedback').style.display = 'none';
+  const tags = {1:'STEP 1 — FRAME',2:'STEP 2 — CALCULATE',3:'STEP 3 — INTERPRET'};
+  document.getElementById('cq-step-tag').textContent = tags[step];
+
+  if(step===1) {
+    document.getElementById('cq-badge').textContent = q.industry;
+    document.getElementById('cq-scenario').textContent = q.scenario;
+    document.getElementById('cq-question').textContent = q.question;
+    const fc = document.getElementById('cq-frames'); fc.innerHTML='';
+    const shuffled = [...q.frames].sort(()=>Math.random()-.5);
+    shuffled.forEach(f => {
+      const btn = document.createElement('button');
+      btn.style.cssText = 'width:100%;text-align:left;padding:13px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);font-family:Inter,sans-serif;font-size:13px;color:var(--bark);cursor:pointer;line-height:1.5;transition:background .15s;-webkit-tap-highlight-color:transparent;';
+      btn.textContent = f.text;
+      btn.onmouseenter = ()=>btn.style.background='rgba(255,255,255,0.8)';
+      btn.onmouseleave = ()=>btn.style.background='rgba(255,255,255,0.55)';
+      btn.onclick = () => selectFrame(f.correct, f.text, q.frame_explanation, btn, shuffled);
+      fc.appendChild(btn);
+    });
+  }
+  if(step===2) {
+    const ctx = document.getElementById('cq-calc-context');
+    const ctxToggle = document.getElementById('cq-calc-context-toggle');
+    const hint = document.getElementById('cq-calc-hint');
+    const hintToggle = document.getElementById('cq-calc-hint-toggle');
+    ctx.textContent = q.calc_context;
+    ctx.style.display = 'none';
+    if(q.calc_context) { ctxToggle.style.display='block'; ctxToggle.textContent='Show working'; } else { ctxToggle.style.display='none'; }
+    document.getElementById('cq-calc-q').textContent = q.calc_question;
+    if(q.calc_hint) { hint.textContent = '💡 ' + q.calc_hint; hint.style.display='none'; hintToggle.style.display='block'; hintToggle.textContent='Show hint'; } else { hint.style.display='none'; hintToggle.style.display='none'; }
+    cqKbdVal = '';
+    updateCqDisplay();
+  }
+  if(step===3) {
+    document.getElementById('cq-result-num').textContent = Number(cqKbdVal.replace(/,/g,'')).toLocaleString();
+    const ic = document.getElementById('cq-insights'); ic.innerHTML='';
+    const shuffled = [...q.insights].sort(()=>Math.random()-.5);
+    shuffled.forEach(ins => {
+      const btn = document.createElement('button');
+      btn.style.cssText = 'width:100%;text-align:left;padding:13px 16px;border-radius:var(--r-sm);background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.75);font-family:Inter,sans-serif;font-size:13px;color:var(--bark);cursor:pointer;line-height:1.5;transition:background .15s;-webkit-tap-highlight-color:transparent;';
+      btn.textContent = ins.text;
+      btn.onmouseenter = ()=>btn.style.background='rgba(255,255,255,0.8)';
+      btn.onmouseleave = ()=>btn.style.background='rgba(255,255,255,0.55)';
+      btn.onclick = () => selectInsight(ins.correct, q.insight_explanation, btn, shuffled);
+      ic.appendChild(btn);
+    });
+  }
+}
+
+function selectFrame(correct, chosen, explanation, btn, allBtns) {
+  allBtns.forEach((_,i) => {
+    const b = document.getElementById('cq-frames').children[i];
+    if(b) b.disabled = true;
+  });
+  btn.style.background = correct ? 'rgba(200,221,224,0.5)' : 'rgba(210,190,178,0.5)';
+  btn.style.borderColor = correct ? 'rgba(74,122,138,0.4)' : 'rgba(140,100,80,0.3)';
+  caseSession.frameScores[caseSession.current] = correct;
+  showCaseFeedback(
+    correct ? '✓ Correct framing' : '✗ Not quite',
+    explanation,
+    correct
+  );
+}
+
+function selectInsight(correct, explanation, btn, allBtns) {
+  // Disable all buttons
+  const ic = document.getElementById('cq-insights');
+  Array.from(ic.children).forEach(b => b.disabled = true);
+  btn.style.background = correct ? 'rgba(200,221,224,0.5)' : 'rgba(210,190,178,0.5)';
+  btn.style.borderColor = correct ? 'rgba(74,122,138,0.4)' : 'rgba(140,100,80,0.3)';
+  caseSession.insightScores[caseSession.current] = correct;
+  // Subtler feedback for insight step — no "✓ Sharp insight", just the explanation
+  showCaseFeedback(
+    correct ? 'That\'s the right read.' : 'Not the sharpest takeaway.',
+    explanation,
+    correct
+  );
+}
+
+function showCaseFeedback(title, body, correct) {
+  const fb = document.getElementById('cq-feedback');
+  const inner = document.getElementById('cq-feedback-inner');
+  document.getElementById('cq-feedback-title').textContent = title;
+  document.getElementById('cq-feedback-body').textContent = body;
+  inner.style.background = correct ? 'rgba(200,221,224,0.75)' : 'rgba(210,190,178,0.75)';
+  inner.style.borderColor = correct ? 'rgba(74,122,138,0.4)' : 'rgba(140,100,80,0.3)';
+  document.getElementById('cq-feedback-title').style.color = correct ? 'var(--correct-txt)' : 'var(--wrong-txt)';
+  fb.style.display = 'block';
+}
+
+function revealCqHint() {
+  document.getElementById('cq-calc-hint').style.display = 'block';
+  document.getElementById('cq-calc-hint-toggle').style.display = 'none';
+}
+function revealCqContext() {
+  document.getElementById('cq-calc-context').style.display = 'block';
+  document.getElementById('cq-calc-context-toggle').style.display = 'none';
+}
+
+function cqKbdTap(key) {
+  if(key==='del') cqKbdVal=cqKbdVal.slice(0,-1);
+  else if(key==='.') { if(!cqKbdVal.includes('.')) cqKbdVal+='.'; }
+  else if(cqKbdVal.length<12) cqKbdVal+=key;
+  updateCqDisplay();
+}
+
+function updateCqDisplay() {
+  const d = document.getElementById('cq-kbd-display');
+  if(!d) return;
+  if(!cqKbdVal) { d.innerHTML='<span style="color:var(--dust);font-family:Inter,sans-serif;font-size:16px;font-weight:300;">your answer</span>'; return; }
+  const hasDot = cqKbdVal.endsWith('.');
+  const n = parseFloat(cqKbdVal);
+  d.textContent = (isNaN(n)?cqKbdVal:n.toLocaleString()) + (hasDot?'.':'');
+}
+
+function cqSubmitCalc() {
+  const val = parseFloat(cqKbdVal.replace(/,/g,''));
+  if(isNaN(val)||!cqKbdVal) {
+    const d = document.getElementById('cq-kbd-display');
+    if(d){d.style.transition='transform .05s';d.style.transform='translateX(6px)';setTimeout(()=>{d.style.transform='translateX(-6px)';setTimeout(()=>d.style.transform='',60)},60);}
+    return;
+  }
+  const q = caseSession.questions[caseSession.current];
+  const tol = q.tolerance||0;
+  const correct = Math.abs(val-q.answer)<=Math.max(tol,0.001);
+  caseSession.calcScores[caseSession.current] = correct;
+  showCaseFeedback(
+    correct ? `✓ Correct — ${Number(val).toLocaleString()}` : `✗ Answer: ${Number(q.answer).toLocaleString()}`,
+    correct ? 'Good calculation. Now interpret what this means for the client.' : `${q.calc_hint||''}. The right answer is ${Number(q.answer).toLocaleString()}.`,
+    correct
+  );
+}
+
+function cqNext() {
+  document.getElementById('cq-feedback').style.display='none';
+  const step = caseSession.step;
+  if(step===1) { showCaseStep(2); return; }
+  if(step===2) { showCaseStep(3); return; }
+  // Step 3 done — move to next question or results
+  caseSession.current++;
+  if(caseSession.current>=caseSession.questions.length) {
+    endCaseSession();
+  } else {
+    renderCaseQ();
+  }
+}
+
+function endCaseSession() {
+  const total = caseSession.questions.length;
+  const fs = caseSession.frameScores.filter(Boolean).length;
+  const cs = caseSession.calcScores.filter(Boolean).length;
+  const is = caseSession.insightScores.filter(Boolean).length;
+  const overall = Math.round((fs+cs+is)/(total*3)*100);
+  const titles = {0:'Keep at it.',50:'Getting there.',70:'Good work.',85:'Strong session.',95:'Excellent.'};
+  const t = Object.keys(titles).filter(k=>overall>=k).pop();
+  document.getElementById('cr-pct').textContent = overall+'%';
+  document.getElementById('cr-title').textContent = titles[t];
+  document.getElementById('cr-sub').textContent = `${total} questions · Framing ${Math.round(fs/total*100)}% · Calc ${Math.round(cs/total*100)}% · Insight ${Math.round(is/total*100)}%`;
+  document.getElementById('cr-frame').textContent = Math.round(fs/total*100)+'%';
+  document.getElementById('cr-calc').textContent = Math.round(cs/total*100)+'%';
+  document.getElementById('cr-insight').textContent = Math.round(is/total*100)+'%';
+  // Review
+  const rv = document.getElementById('cr-review'); rv.innerHTML='';
+  caseSession.questions.forEach((q,i) => {
+    const fc=caseSession.frameScores[i],cc=caseSession.calcScores[i],ic=caseSession.insightScores[i];
+    const all=fc&&cc&&ic;
+    const el=document.createElement('div');
+    el.style.cssText=`background:${all?'rgba(200,221,224,0.3)':'rgba(210,190,178,0.3)'};border:1px solid ${all?'rgba(74,122,138,0.25)':'rgba(140,100,80,0.25)'};border-radius:var(--r-sm);padding:12px 14px;margin-bottom:8px;`;
+    el.innerHTML=`<div style="font-size:12px;color:var(--bark);line-height:1.5;margin-bottom:8px;">${q.question}</div><div style="display:flex;gap:8px;"><span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${fc?'rgba(200,221,224,0.5)':'rgba(210,190,178,0.5)'};color:${fc?'var(--correct-txt)':'var(--wrong-txt)'};">Frame ${fc?'✓':'✗'}</span><span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${cc?'rgba(200,221,224,0.5)':'rgba(210,190,178,0.5)'};color:${cc?'var(--correct-txt)':'var(--wrong-txt)'};">Calc ${cc?'✓':'✗'}</span><span style="font-size:11px;padding:2px 8px;border-radius:10px;background:${ic?'rgba(200,221,224,0.5)':'rgba(210,190,178,0.5)'};color:${ic?'var(--correct-txt)':'var(--wrong-txt)'};">Insight ${ic?'✓':'✗'}</span></div>`;
+    rv.appendChild(el);
+  });
+  // Save stats
+  const key='case_'+currentCaseArchetype;
+  if(!state.topicStats[key]) state.topicStats[key]={correct:0,answered:0,reps:0};
+  state.topicStats[key].correct+=fs+cs+is;
+  state.topicStats[key].answered+=total*3;
+  state.topicStats[key].reps+=total;
+  state.sessions++; saveState();
+  showScreen('case-result');
+}
+
+function exitCaseSession() { showScreen('case-menu'); }
+
+
 // Add or remove codes here — each is a 6-digit string
 // Share individually so you can identify who has which code
 const VALID_CODES = [
@@ -1743,7 +2722,6 @@ const VALID_CODES = [
   '876646', // Code 28
   '877572', // Code 29
   '983514', // Code 30
-  '000001', // Code 31
 ];
 const CODE_LENGTH = 6;
 let gateInput = '';
